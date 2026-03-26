@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product — FreshMart</title>
+    <meta name="description" content="View product details on FreshMart.">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="main.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .thumb-active { border-color: #22c55e !important; opacity: 1 !important; }
+        .seller-list-enter { animation: fadeUp 0.3s ease forwards; }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+        .product-animate { animation: fadeUp 0.35s ease forwards; }
+        /* Refined smaller layout */
+        body { font-size: 14px; }
+        h1, h2, h3, h4, h5, h6 { font-family: 'Montserrat', sans-serif; }
+    </style>
+</head>
+<body class="antialiased bg-gray-50 text-sm">
+
+    <!-- HEADER -->
+    <header class="glass-header sticky top-0 z-40 bg-white/90 backdrop-blur border-b border-gray-100">
+        <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-14 lg:h-16">
+                <a href="index.html" class="flex items-center gap-2 block">
+                    <div class="w-8 h-8 lg:w-10 lg:h-10 bg-gradient-to-br from-green-400 to-green-600 rounded-lg flex items-center justify-center text-white text-lg shadow-sm">
+                        <i class="fas fa-shopping-basket"></i>
+                    </div>
+                    <span class="text-lg lg:text-xl font-bold tracking-tight text-gray-900">FreshMart<span class="text-green-500">.</span></span>
+                </a>
+
+                <div class="hidden md:block flex-1 max-w-xl mx-6">
+                    <div class="relative group">
+                        <i class="fas fa-search absolute left-3 top-2.5 text-gray-400 group-focus-within:text-green-500 transition text-sm"></i>
+                        <input type="text" id="pageSearch" placeholder="Search products..."
+                            class="w-full bg-gray-100 border border-transparent rounded-lg py-2 pl-9 pr-3 focus:border-green-500 focus:bg-white transition-all text-sm shadow-inner" onkeypress="if(event.key==='Enter') window.location.href='results.html?q='+this.value">
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-2">
+                    <a href="index.html" class="hidden lg:flex items-center gap-1.5 text-gray-600 hover:text-green-600 font-medium text-sm transition"><i class="fas fa-home"></i> Home</a>
+                    <button id="cartBtn" class="relative p-2 text-gray-600 hover:bg-green-50 hover:text-green-600 rounded-md transition-colors">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span id="headerCartCount" class="absolute -top-0.5 -right-0.5 w-4 h-4 bg-green-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center">0</span>
+                    </button>
+                    <button id="mobileSearchBtn" class="md:hidden p-2 text-gray-600 hover:bg-gray-100 rounded-md transition" onclick="document.getElementById('mobileSearchBox').classList.toggle('hidden')">
+                        <i class="fas fa-search text-sm"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div id="mobileSearchBox" class="md:hidden pb-2 hidden">
+                <div class="relative">
+                    <i class="fas fa-search absolute left-3.5 top-2.5 text-gray-400 text-xs"></i>
+                    <input type="text" id="mobilePageSearch" placeholder="Search products..."
+                        class="w-full bg-gray-100 border border-transparent rounded-lg py-2 pl-9 pr-3 text-sm focus:border-green-500" onkeypress="if(event.key==='Enter') window.location.href='results.html?q='+this.value">
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- FULL WIDTH BANNER -->
+    <div class="w-full h-32 md:h-48 lg:h-56 bg-gray-200 relative overflow-hidden">
+        <img id="bannerImg" src="https://images.unsplash.com/photo-1542838132-92c53300491e?w=1600&q=80" alt="Store Banner" class="w-full h-full object-cover opacity-90">
+        <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
+    </div>
+
+    <!-- MAIN CONTENT CONTAINER (Refined width) -->
+    <div class="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 relative mb-12">
+        
+        <!-- CIRCULAR AVATAR OVERLAPPING BANNER -->
+        <div class="absolute -top-12 md:-top-16 left-4 sm:left-6 lg:left-8 z-10 flex items-end gap-4">
+            <div class="w-24 h-24 md:w-32 md:h-32 rounded-full border-4 border-white bg-white shadow-lg flex items-center justify-center overflow-hidden shrink-0">
+                <img id="avatarImg" src="https://ui-avatars.com/api/?name=Farm&background=16a34a&color=fff&size=128" alt="Store Avatar" class="w-full h-full object-cover">
+            </div>
+            <!-- Store specific info floating above/below -->
+            <div class="pb-1 hidden md:block text-white mb-16 shadow-sm">
+                <h2 id="storeTitle" class="text-2xl font-bold tracking-tight drop-shadow-md">Store Name</h2>
+                <p class="text-sm font-medium opacity-90 drop-shadow-md"><i class="fas fa-star text-yellow-400 mr-1"></i>4.8 Rating</p>
+            </div>
+        </div>
+
+        <!-- Spacing to clear avatar on mobile -->
+        <div class="pt-16 md:pt-4"></div>
+
+        <div class="md:hidden mb-4">
+            <h2 id="storeTitleMobile" class="text-xl font-bold tracking-tight text-gray-900">Store Name</h2>
+            <p class="text-xs text-gray-500 font-medium"><i class="fas fa-star text-yellow-500 mr-1"></i>4.8 Rating</p>
+        </div>
+
+        <!-- Breadcrumbs -->
+        <nav class="flex items-center gap-1.5 text-xs text-gray-500 mb-6 w-full overflow-x-auto whitespace-nowrap pb-1">
+            <a href="index.html" class="hover:text-green-600 transition flex items-center"><i class="fas fa-home mr-1"></i>Home</a>
+            <i class="fas fa-chevron-right text-[8px] text-gray-300"></i>
+            <a id="bcCategory" href="#" class="hover:text-green-600 transition capitalize">Category</a>
+            <i class="fas fa-chevron-right text-[8px] text-gray-300"></i>
+            <a id="bcSubcategory" href="#" class="hover:text-green-600 transition">Subcategory</a>
+            <i class="fas fa-chevron-right text-[8px] text-gray-300"></i>
+            <span id="bcProduct" class="text-gray-800 font-semibold truncate max-w-[150px] sm:max-w-xs block">Product Name</span>
+        </nav>
+
+        <div id="productNotFound" class="hidden text-center py-12">
+            <h2 class="text-xl font-bold mb-3">Product Not Found</h2>
+            <a href="index.html" class="btn-primary text-sm px-6 py-2">Return to Home</a>
+        </div>
+
+        <div id="productContainer" class="hidden flex flex-col md:flex-row gap-6 lg:gap-10">
+            <!-- Left: Gallery (Smaller) -->
+            <div class="w-full md:w-5/12 lg:w-6/12 flex flex-col gap-3">
+                <div class="bg-white rounded-2xl overflow-hidden border border-gray-100 relative shadow-sm aspect-square flex items-center justify-center p-6 group">
+                    <img id="mainImg" src="" alt="Product" class="w-full h-full object-contain max-h-[350px] transition-transform duration-500 group-hover:scale-105">
+                    <div id="badgesContainer" class="absolute top-3 left-3 flex flex-col gap-1.5"></div>
+                </div>
+                <!-- Thumbnails -->
+                <div class="flex gap-2 overflow-x-auto pb-1 custom-scrollbar">
+                    <div class="w-16 h-16 rounded-xl border-2 border-green-500 bg-white p-1.5 shrink-0 cursor-pointer thumb-active overflow-hidden">
+                        <img id="thumb1" src="" class="w-full h-full object-contain">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right: Details (Smaller fonts, tighter spacing) -->
+            <div class="w-full md:w-7/12 lg:w-6/12 flex flex-col">
+                <div class="flex items-center gap-2 mb-2">
+                    <span id="storeBadge" class="bg-gray-100 text-gray-600 text-[10px] px-2 py-0.5 rounded font-semibold uppercase tracking-wider flex items-center"><i class="fas fa-store mr-1 text-[9px]"></i><span id="prodStore">Store</span></span>
+                    <span id="organicBadgeDetail" class="hidden bg-green-50 text-green-700 text-[10px] px-2 py-0.5 rounded font-semibold uppercase tracking-wider flex items-center border border-green-100"><i class="fas fa-leaf mr-1 text-[9px]"></i>Organic</span>
+                    <span id="freshBadgeDetail" class="hidden bg-blue-50 text-blue-700 text-[10px] px-2 py-0.5 rounded font-semibold uppercase tracking-wider flex items-center border border-blue-100"><i class="fas fa-seedling mr-1 text-[9px]"></i>Fresh</span>
+                </div>
+                
+                <h1 id="prodName" class="font-bold text-2xl lg:text-3xl text-gray-900 mb-2 leading-tight">Product Name</h1>
+                
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="flex items-center" id="prodStars"></div>
+                    <span class="text-xs text-gray-500 font-semibold" id="prodReviews">(0)</span>
+                    <div class="w-1 h-1 bg-gray-300 rounded-full"></div>
+                    <span class="text-xs font-semibold text-green-600 flex items-center"><i class="fas fa-check-circle mr-1 text-[10px]"></i>In Stock</span>
+                </div>
+
+                <div class="bg-white p-4 md:p-5 rounded-2xl border border-gray-100 shadow-sm mb-6 flex flex-col relative overflow-hidden">
+                    <div class="flex items-end gap-2 mb-1">
+                        <span id="prodPrice" class="text-3xl font-extrabold text-green-600 tracking-tight">$0.00</span>
+                        <span class="text-sm text-gray-500 mb-1" id="prodUnit">/ unit</span>
+                    </div>
+                    <div class="flex items-center gap-2 mb-5 h-5">
+                        <span id="prodOrigPrice" class="text-gray-400 line-through text-sm font-semibold">$0.00</span>
+                        <span id="prodSave" class="text-red-600 font-bold text-[10px] bg-red-50 px-2 py-0.5 rounded hidden tracking-wide">SAVE $0.00</span>
+                    </div>
+
+                    <div class="flex items-center gap-3">
+                        <div class="flex items-center border border-gray-200 rounded-xl bg-gray-50 h-10">
+                            <button class="w-10 h-full flex items-center justify-center text-gray-500 hover:text-green-600 transition-colors" onclick="updDetailQty(-1)"><i class="fas fa-minus text-xs"></i></button>
+                            <span id="detailQty" class="w-8 text-center font-bold text-sm select-none">1</span>
+                            <button class="w-10 h-full flex items-center justify-center text-gray-500 hover:text-green-600 transition-colors" onclick="updDetailQty(1)"><i class="fas fa-plus text-xs"></i></button>
+                        </div>
+                        <button class="flex-1 bg-green-500 hover:bg-green-600 text-white font-bold text-sm h-10 rounded-xl flex items-center justify-center gap-2 transition shadow-sm active:transform active:scale-[0.98]" onclick="addCurrentToCart()">
+                            <i class="fas fa-shopping-cart text-xs"></i> Add to Cart
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Product Description & Features -->
+                <div class="mb-6">
+                    <h3 class="font-bold text-sm text-gray-900 mb-2 uppercase tracking-wide">Description</h3>
+                    <p class="text-gray-600 text-sm leading-relaxed mb-4">
+                        Sourced directly from trusted farms, this premium quality product is guaranteed fresh. Perfect for your daily needs and culinary creations.
+                    </p>
+                    <ul class="grid grid-cols-1 sm:grid-cols-2 gap-y-1.5 gap-x-3 text-xs text-gray-600">
+                        <li class="flex items-center gap-1.5"><i class="fas fa-check text-green-500"></i>100% Satisfaction Guarantee</li>
+                        <li class="flex items-center gap-1.5"><i class="fas fa-check text-green-500"></i>Locally sourced ingredients</li>
+                        <li class="flex items-center gap-1.5"><i class="fas fa-check text-green-500"></i>Premium grade quality</li>
+                    </ul>
+                </div>
+
+                <!-- Seller Comparison Section (if multiple) -->
+                <div id="sellerComparisonContainer" class="hidden border-t border-gray-100 pt-5">
+                    <h3 class="font-bold text-sm text-gray-900 mb-3 flex items-center justify-between uppercase tracking-wide">
+                        <span class="flex items-center"><i class="fas fa-store text-blue-500 mr-2"></i>Other Sellers</span>
+                        <span id="sellerCount" class="text-[10px] font-bold text-gray-500 bg-gray-100 px-2 py-0.5 rounded">3 Sellers</span>
+                    </h3>
+                    <div id="sellerList" class="flex flex-col gap-2"></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- COMMENT SYSTEM (Product) -->
+        <div id="productComments" class="border-t border-gray-100 pt-10 mt-10 w-full max-w-4xl mx-auto mb-10">
+            <h2 class="text-xl font-bold text-gray-900 mb-6"><span id="productCommentCount">0</span> Reviews & Ratings</h2>
+            
+            <div class="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm mb-8">
+                <h4 class="font-bold text-gray-800 text-sm mb-3 uppercase tracking-wide">Write a Review</h4>
+                <form id="productCommentForm" onsubmit="submitProductComment(event)">
+                    <div class="mb-4">
+                        <label class="block text-[10px] font-bold text-gray-500 uppercase mb-1.5">Rating *</label>
+                        <div class="flex items-center gap-1 text-xl text-gray-300 cursor-pointer" id="ratingInputContainer">
+                            <i class="fas fa-star hover:text-yellow-400 transition" data-val="1"></i>
+                            <i class="fas fa-star hover:text-yellow-400 transition" data-val="2"></i>
+                            <i class="fas fa-star hover:text-yellow-400 transition" data-val="3"></i>
+                            <i class="fas fa-star hover:text-yellow-400 transition" data-val="4"></i>
+                            <i class="fas fa-star hover:text-yellow-400 transition" data-val="5"></i>
+                        </div>
+                        <input type="hidden" id="cmtRating" value="0" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="block text-[10px] font-bold text-gray-500 uppercase mb-1">Your Name *</label>
+                        <input type="text" id="cmtName" required class="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-green-500 focus:bg-white transition" placeholder="Jane Doe">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-[10px] font-bold text-gray-500 uppercase mb-1">Review *</label>
+                        <textarea id="cmtText" required rows="3" class="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-green-500 focus:bg-white transition resize-none" placeholder="What did you like about this product?"></textarea>
+                    </div>
+                    <button type="submit" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-6 rounded-lg text-sm transition">
+                        Submit Review
+                    </button>
+                </form>
+            </div>
+
+            <!-- Comments List -->
+            <div id="productCommentsList" class="space-y-4"></div>
+        </div>
+
+        <!-- Related Products -->
+        <div id="relatedSection" class="hidden border-t border-gray-100 pt-8">
+            <h2 class="text-xl font-bold text-gray-900 mb-5 flex items-center gap-2">
+                <i class="fas fa-bullseye text-green-500 text-sm"></i> Similar Products You Might Like
+            </h2>
+            <div id="relatedGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3"></div>
+        </div>
+
+    </div>
+
+    <!-- CART SIDEBAR (Reused) -->
+    <div class="cart-overlay fixed inset-0 bg-black/50 z-50 hidden" id="cartOverlay"></div>
+    <div class="cart-sidebar fixed top-0 right-0 h-full w-full md:w-[350px] bg-white z-[60] shadow-2xl flex flex-col translate-x-full transition-transform duration-300" id="cartSidebar">
+        <div class="flex items-center justify-between p-4 border-b">
+            <h3 class="font-bold text-lg"><i class="fas fa-shopping-cart text-green-500 mr-2"></i>Your Cart</h3>
+            <button id="closeCart" class="p-1.5 hover:bg-gray-100 rounded-md transition text-gray-500 hover:text-gray-800" onclick="closeCart()"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="flex-1 overflow-y-auto p-4" id="cartItems"></div>
+        <div class="border-t p-4 bg-gray-50">
+            <div class="flex justify-between items-center mb-3">
+                <span class="font-bold text-sm text-gray-600">Total</span>
+                <span class="font-bold text-green-600 text-xl tracking-tight" id="cartTotal">$0.00</span>
+            </div>
+            <button class="bg-green-500 hover:bg-green-600 text-white font-bold text-sm w-full py-2.5 rounded-lg transition active:scale-[0.98]">Checkout <i class="fas fa-chevron-right ml-1 text-[10px]"></i></button>
+        </div>
+    </div>
+
+    <!-- TOAST -->
+    <div id="toast" class="toast fixed top-16 right-4 z-[70] bg-gray-900 text-white rounded-lg shadow-xl p-3 flex items-center gap-3 min-w-[250px] translate-x-[120%] transition-transform duration-300">
+        <i class="fas fa-check-circle text-green-400 text-lg"></i>
+        <div>
+            <h4 id="toast-title" class="font-bold text-sm">Success!</h4>
+            <p id="toast-message" class="text-xs text-gray-300">Action completed</p>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="bg-gray-900 text-gray-400 py-6 mt-8">
+        <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-3">
+            <div class="flex items-center gap-2">
+                <div class="w-6 h-6 bg-green-500 rounded text-xs flex items-center justify-center text-white"><i class="fas fa-shopping-basket"></i></div>
+                <span class="font-bold text-white text-sm">FreshMart<span class="text-green-500">.</span></span>
+            </div>
+            <p class="text-[11px]">&copy; 2024 FreshMart. All rights reserved.</p>
+        </div>
+    </footer>
+
+<script>
+// Mock Database
+const allProducts = [
+    {id:1,name:'Organic Red Apples',category:'fruits',subcategory:'Apple',price:4.99,originalPrice:6.99,unit:'lb',image:'https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?w=600&q=80',rating:4.8,reviews:124,store:'Green Valley Market',discount:29,organic:true,fresh:true},
+    {id:2,name:'Fresh Broccoli',category:'vegetables',subcategory:'Broccoli',price:2.49,originalPrice:3.49,unit:'bunch',image:'https://images.unsplash.com/photo-1459411552884-841db9b3cc2a?w=600&q=80',rating:4.6,reviews:89,store:'Fresh Choice Organics',discount:29,organic:false,fresh:true},
+    {id:3,name:'Whole Milk',category:'dairy',subcategory:'Milk',price:3.99,originalPrice:4.99,unit:'gallon',image:'https://images.unsplash.com/photo-1563636619-e9143da7973b?w=600&q=80',rating:4.9,reviews:256,store:'Super Saver Mart',discount:20,organic:false,fresh:false},
+    {id:4,name:'Sourdough Bread',category:'bakery',subcategory:'Bread',price:5.99,originalPrice:7.99,unit:'loaf',image:'https://images.unsplash.com/photo-1585478259715-876acc5be8eb?w=600&q=80',rating:4.7,reviews:67,store:'Sunrise Bakery',discount:25,organic:false,fresh:true},
+    {id:5,name:'Organic Bananas',category:'fruits',subcategory:'Banana',price:1.49,originalPrice:1.99,unit:'lb',image:'https://images.unsplash.com/photo-1571771894821-ce9b6c11b08e?w=600&q=80',rating:4.5,reviews:198,store:'Green Valley Market',discount:25,organic:true,fresh:true},
+    {id:6,name:'Fresh Spinach',category:'vegetables',subcategory:'Spinach',price:3.99,originalPrice:4.99,unit:'bag',image:'https://images.unsplash.com/photo-1576045057995-568f588f82fb?w=600&q=80',rating:4.8,reviews:145,store:'Fresh Choice Organics',discount:20,organic:true,fresh:true},
+    {id:7,name:'Greek Yogurt',category:'dairy',subcategory:'Yogurt',price:5.49,originalPrice:6.99,unit:'32oz',image:'https://images.unsplash.com/photo-1488477181946-6428a0291777?w=600&q=80',rating:4.7,reviews:89,store:'Super Saver Mart',discount:21,organic:false,fresh:false},
+    {id:8,name:'Atlantic Salmon',category:'meat',subcategory:'Salmon',price:12.99,originalPrice:16.99,unit:'lb',image:'https://images.unsplash.com/photo-1599084993091-1cb5c0721cc6?w=600&q=80',rating:4.9,reviews:234,store:'The Prime Cut',discount:24,organic:false,fresh:true},
+    {id:9,name:'Organic Strawberries',category:'fruits',subcategory:'Strawberry',price:4.99,originalPrice:6.49,unit:'16oz',image:'https://images.unsplash.com/photo-1464965911861-746a04b4bca6?w=600&q=80',rating:4.6,reviews:167,store:'Green Valley Market',discount:23,organic:true,fresh:true},
+    {id:10,name:'Croissants',category:'bakery',subcategory:'Croissant',price:6.99,originalPrice:8.99,unit:'4ct',image:'https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=600&q=80',rating:4.8,reviews:112,store:'Sunrise Bakery',discount:22,organic:false,fresh:true},
+    {id:11,name:'Baby Carrots',category:'vegetables',subcategory:'Carrot',price:2.29,originalPrice:2.99,unit:'bag',image:'https://images.unsplash.com/photo-1598170845058-32b9d6a5da37?w=600&q=80',rating:4.4,reviews:76,store:'Fresh Choice Organics',discount:23,organic:false,fresh:true},
+    {id:12,name:'Cheddar Cheese',category:'dairy',subcategory:'Cheese',price:7.49,originalPrice:9.99,unit:'8oz',image:'https://images.unsplash.com/photo-1618160702438-9b02ab6515c9?w=600&q=80',rating:4.7,reviews:203,store:'Super Saver Mart',discount:25,organic:false,fresh:false},
+];
+
+const sellerOffers = {
+  1:[{seller:'Green Valley Market',type:'grocery',price:4.99,origPrice:6.99,rating:4.8,reviews:124,inStock:true,delivery:'Same Day'},{seller:'Fresh Choice Organics',type:'organic',price:5.29,origPrice:7.49,rating:4.9,reviews:67,inStock:true,delivery:'Next Day'},{seller:'City Market',type:'grocery',price:4.49,origPrice:5.99,rating:4.3,reviews:45,inStock:true,delivery:'2-3 Days'},{seller:'Healthy Eats',type:'organic',price:5.79,origPrice:7.99,rating:4.7,reviews:89,inStock:false,delivery:'Next Day'}],
+  2:[{seller:'Fresh Choice Organics',type:'organic',price:2.49,origPrice:3.49,rating:4.6,reviews:89,inStock:true,delivery:'Same Day'},{seller:'Green Valley Market',type:'grocery',price:2.29,origPrice:3.29,rating:4.4,reviews:56,inStock:true,delivery:'Next Day'},{seller:'City Market',type:'grocery',price:1.99,origPrice:2.99,rating:4.1,reviews:34,inStock:true,delivery:'2-3 Days'}],
+};
+
+let currentProduct = null;
+let currentQty = 1;
+let cart = [];
+
+document.addEventListener('DOMContentLoaded', () => {
+    const pId = parseInt(new URLSearchParams(window.location.search).get('id'));
+    currentProduct = allProducts.find(p => p.id === pId);
+
+    if (!currentProduct) {
+        document.getElementById('productNotFound').classList.remove('hidden');
+        return;
+    }
+
+    document.getElementById('productContainer').classList.remove('hidden');
+    document.getElementById('relatedSection').classList.remove('hidden');
+
+    document.title = `${currentProduct.name} - FreshMart`;
+    
+    // Breadcrumbs
+    document.getElementById('bcCategory').textContent = currentProduct.category;
+    document.getElementById('bcCategory').href = `category.html?cat=${currentProduct.category}`;
+    document.getElementById('bcSubcategory').textContent = currentProduct.subcategory;
+    document.getElementById('bcSubcategory').href = `category.html?cat=${currentProduct.category}&subcats=${currentProduct.subcategory}`;
+    document.getElementById('bcProduct').textContent = currentProduct.name;
+
+    // Load Data
+    document.getElementById('mainImg').src = currentProduct.image;
+    document.getElementById('thumb1').src = currentProduct.image;
+    document.getElementById('prodName').textContent = currentProduct.name;
+    document.getElementById('prodStore').textContent = currentProduct.store;
+    document.getElementById('storeTitle').textContent = currentProduct.store;
+    document.getElementById('storeTitleMobile').textContent = currentProduct.store;
+    document.getElementById('avatarImg').src = `https://ui-avatars.com/api/?name=${encodeURIComponent(currentProduct.store)}&background=16a34a&color=fff&size=256`;
+    
+    // Assign banner based on category or store (mocked fixed random images)
+    const banners = [
+        'https://images.unsplash.com/photo-1542838132-92c53300491e?w=1600&q=80',
+        'https://images.unsplash.com/photo-1534723452862-4c874018d66d?w=1600&q=80',
+        'https://images.unsplash.com/photo-1498579485796-983bfcbabffe?w=1600&q=80'
+    ];
+    document.getElementById('bannerImg').src = banners[currentProduct.id % banners.length];
+
+    document.getElementById('prodPrice').textContent = `$${currentProduct.price.toFixed(2)}`;
+    document.getElementById('prodOrigPrice').textContent = `$${currentProduct.originalPrice.toFixed(2)}`;
+    document.getElementById('prodUnit').textContent = `/ ${currentProduct.unit}`;
+    
+    if (currentProduct.discount > 0) {
+        let saveEl = document.getElementById('prodSave');
+        saveEl.textContent = `SAVE $${(currentProduct.originalPrice - currentProduct.price).toFixed(2)}`;
+        saveEl.classList.remove('hidden');
+        document.getElementById('badgesContainer').innerHTML = `<span class="bg-red-500 text-white text-[10px] uppercase font-bold px-2 py-0.5 rounded shadow-sm">-${currentProduct.discount}% OFF</span>`;
+    }
+
+    if (currentProduct.organic) document.getElementById('organicBadgeDetail').classList.remove('hidden');
+    if (currentProduct.fresh) document.getElementById('freshBadgeDetail').classList.remove('hidden');
+
+    let s = ''; const r = currentProduct.rating;
+    for (let i = 0; i < 5; i++) {
+        if (i < Math.floor(r)) s += '<i class="fas fa-star text-yellow-500 text-[10px]"></i>';
+        else if (i === Math.floor(r) && r % 1 >= 0.5) s += '<i class="fas fa-star-half-alt text-yellow-500 text-[10px]"></i>';
+        else s += '<i class="far fa-star text-gray-300 text-[10px]"></i>';
+    }
+    document.getElementById('prodStars').innerHTML = s;
+    document.getElementById('prodReviews').textContent = `(${currentProduct.reviews} reviews)`;
+
+    renderRelated();
+    renderSellers();
+    renderProductComments();
+    setupRatingInput();
+});
+
+function updDetailQty(dir) {
+    if (currentQty + dir > 0) {
+        currentQty += dir;
+        document.getElementById('detailQty').textContent = currentQty;
+    }
+}
+
+function addCurrentToCart() {
+    if (!currentProduct) return;
+    const existing = cart.find(i => i.id === currentProduct.id && i.store === currentProduct.store);
+    if (existing) existing.qty += currentQty;
+    else cart.push({...currentProduct, qty: currentQty});
+    updCart();
+    
+    const toast = document.getElementById('toast');
+    document.getElementById('toast-title').textContent = 'Added to Cart';
+    document.getElementById('toast-message').textContent = `${currentQty}x ${currentProduct.name}`;
+    toast.classList.remove('translate-x-[120%]');
+    setTimeout(() => toast.classList.add('translate-x-[120%]'), 3000);
+    
+    currentQty = 1; document.getElementById('detailQty').textContent = 1;
+}
+
+function renderSellers() {
+    const offers = sellerOffers[currentProduct.id] || [];
+    if (offers.length > 0) {
+        document.getElementById('sellerComparisonContainer').classList.remove('hidden');
+        document.getElementById('sellerCount').textContent = `${offers.length} Sellers`;
+        const minPrice = Math.min(...offers.map(o => o.price));
+        const sorted = [...offers].sort((a,b) => a.price - b.price);
+        
+        document.getElementById('sellerList').innerHTML = sorted.map((o, idx) => {
+            const isBest = o.price === minPrice;
+            const diff = (o.price - currentProduct.price).toFixed(2);
+            let diffHtml = diff < 0 ? `<span class="text-[9px] font-bold text-red-600 bg-red-50 px-1.5 py-0.5 rounded uppercase mt-0.5 inline-block">Save $${Math.abs(diff)}</span>` 
+                         : (diff > 0 ? `<span class="text-[9px] text-gray-500 block mt-0.5">+$${diff}</span>` : '');
+
+            return `<div class="seller-list-enter flex items-center justify-between p-3 bg-white border border-gray-100 rounded-xl hover:border-gray-200 transition-colors ${isBest?'border-green-200':''}" style="animation-delay:${idx*0.05}s">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-lg bg-gray-50 flex items-center justify-center text-gray-400">
+                        <i class="fas fa-store-alt text-sm"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-gray-900 text-xs flex items-center gap-1.5">
+                            ${o.seller} ${isBest?'<span class="text-[8px] bg-green-100 text-green-700 px-1 w-fit rounded uppercase">Best</span>':''}
+                        </h4>
+                        <div class="flex items-center gap-2 mt-0.5 text-[10px] text-gray-500">
+                            <span><i class="fas fa-star text-yellow-500 mr-0.5"></i>${o.rating}</span>
+                            <span class="${o.inStock?'text-green-600':''}"><i class="fas ${o.inStock?'fa-check':'fa-times'} mr-0.5"></i>${o.inStock?'In Stock':'Out'}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-right flex flex-col items-end">
+                    <span class="font-bold text-sm text-gray-900">$${o.price.toFixed(2)}</span>
+                    ${diffHtml}
+                    <button class="mt-1.5 text-[10px] font-bold text-green-600 border border-green-500 hover:bg-green-50 px-3 py-1 rounded transition" onclick="buyFromSeller('${o.seller}', ${o.price})" ${!o.inStock?'disabled':''}>Buy</button>
+                </div>
+            </div>`;
+        }).join('');
+    }
+}
+
+function buyFromSeller(seller, price) {
+    const existing = cart.find(i => i.id === currentProduct.id && i.store === seller);
+    if (existing) existing.qty += 1; else cart.push({...currentProduct, store: seller, price: price, qty: 1});
+    updCart();
+    const toast = document.getElementById('toast');
+    document.getElementById('toast-title').textContent = 'Added to Cart';
+    document.getElementById('toast-message').textContent = `1x ${currentProduct.name} fro ${seller}`;
+    toast.classList.remove('translate-x-[120%]');
+    setTimeout(() => toast.classList.add('translate-x-[120%]'), 3000);
+}
+
+function renderRelated() {
+    let related = allProducts.filter(p => p.id !== currentProduct.id && p.subcategory === currentProduct.subcategory);
+    if (related.length < 6) {
+        const more = allProducts.filter(p => p.id !== currentProduct.id && p.category === currentProduct.category && p.subcategory !== currentProduct.subcategory);
+        related = [...related, ...more];
+    }
+    related = related.slice(0, 6);
+
+    document.getElementById('relatedGrid').innerHTML = related.map((p,i) => `
+        <a href="product.html?id=${p.id}" class="product-animate bg-white rounded-xl overflow-hidden border border-gray-100 group block hover:shadow-md transition-shadow" style="animation-delay:${i*0.05}s">
+            <div class="relative h-32 overflow-hidden">
+                <img src="${p.image}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                ${p.discount ? `<span class="absolute top-2 left-2 bg-red-500 text-white text-[9px] font-bold px-1.5 py-0.5 rounded shadow-sm">-${p.discount}%</span>` : ''}
+            </div>
+            <div class="p-2.5">
+                <p class="text-[9px] text-gray-500 mb-0.5 truncate uppercase tracking-wider">${p.store}</p>
+                <h4 class="font-bold text-gray-800 text-xs mb-1 truncate">${p.name}</h4>
+                <div class="flex items-center justify-between mt-1">
+                    <span class="font-bold text-green-600 text-sm">$${p.price.toFixed(2)}</span>
+                </div>
+            </div>
+        </a>`).join('');
+}
+
+let productCommentsData = [
+    { id: 1, name: "Alice Johnson", date: "Oct 20, 2024", rating: 5, text: "Absolutely loved it! Very fresh and exactly as described in the picture.", avatar: "https://ui-avatars.com/api/?name=Alice+Johnson&background=f3f4f6&color=374151" },
+    { id: 2, name: "Mark Stevenson", date: "Oct 21, 2024", rating: 4, text: "Good quality, delivery was slightly delayed but the product itself is great.", avatar: "https://ui-avatars.com/api/?name=Mark+Stevenson&background=f3f4f6&color=374151" }
+];
+
+function renderProductComments() {
+    document.getElementById('productCommentCount').textContent = productCommentsData.length;
+    document.getElementById('productCommentsList').innerHTML = productCommentsData.map(c => `
+        <div class="bg-gray-50 rounded-xl p-4 border border-gray-100 flex gap-3">
+            <img src="${c.avatar}" class="w-10 h-10 rounded-full border border-gray-200 shrink-0">
+            <div>
+                <div class="flex items-center gap-2">
+                    <h5 class="font-bold text-gray-900 text-sm">${c.name}</h5>
+                    <span class="text-[10px] text-gray-500">${c.date}</span>
+                </div>
+                <div class="flex items-center gap-0.5 my-1">
+                    ${Array(5).fill(0).map((_,i) => `<i class="fas fa-star text-[10px] ${i<c.rating?'text-yellow-500':'text-gray-300'}"></i>`).join('')}
+                </div>
+                <p class="text-gray-700 text-xs leading-relaxed mt-1">${c.text}</p>
+            </div>
+        </div>
+    `).join('');
+}
+
+function setupRatingInput() {
+    const stars = document.querySelectorAll('#ratingInputContainer i');
+    const hiddenInput = document.getElementById('cmtRating');
+    stars.forEach(star => {
+        star.addEventListener('click', (e) => {
+            const val = parseInt(e.target.getAttribute('data-val'));
+            hiddenInput.value = val;
+            stars.forEach(s => {
+                const sVal = parseInt(s.getAttribute('data-val'));
+                s.className = `fas fa-star transition ${sVal<=Math.floor(val)?'text-yellow-400':'text-gray-300'} cursor-pointer hover:text-yellow-400`;
+            });
+        });
+    });
+}
+
+function submitProductComment(e) {
+    e.preventDefault();
+    const rating = parseInt(document.getElementById('cmtRating').value);
+    if(rating === 0) { alert('Please select a rating'); return; }
+    const name = document.getElementById('cmtName').value.trim();
+    const text = document.getElementById('cmtText').value.trim();
+    if(!name || !text) return;
+    
+    const today = new Intl.DateTimeFormat('en-US', {month:'short', day:'numeric', year:'numeric'}).format(new Date());
+    productCommentsData.unshift({
+        id: Date.now(), name: name, date: today, rating: rating, text: text,
+        avatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=f3f4f6&color=374151`
+    });
+    
+    document.getElementById('productCommentForm').reset();
+    document.getElementById('cmtRating').value = 0;
+    document.querySelectorAll('#ratingInputContainer i').forEach(s => { s.className = 'fas fa-star transition text-gray-300 hover:text-yellow-400'; });
+    
+    renderProductComments();
+    const toast = document.getElementById('toast');
+    document.getElementById('toast-title').textContent = 'Review Submitted';
+    document.getElementById('toast-message').textContent = 'Thank you for your feedback.';
+    toast.classList.remove('translate-x-[120%]');
+    setTimeout(() => toast.classList.add('translate-x-[120%]'), 3000);
+}
+
+// ============== CART LOGIC =================
+function updCart() {
+    document.getElementById('headerCartCount').textContent = cart.reduce((s,i)=>s+i.qty,0);
+    document.getElementById('cartTotal').textContent = `$${cart.reduce((s,i)=>s+(i.price*i.qty),0).toFixed(2)}`;
+    document.getElementById('cartItems').innerHTML = cart.length === 0
+        ? '<div class="flex flex-col items-center justify-center h-full py-12"><div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-3"><i class="fas fa-shopping-cart text-2xl text-gray-300"></i></div><p class="text-gray-500 text-sm">Cart is empty</p></div>'
+        : cart.map(i => `<div class="flex gap-3 py-3 border-b border-gray-100">
+            <img src="${i.image}" class="w-14 h-14 rounded-lg object-cover border border-gray-100">
+            <div class="flex-1">
+                <h5 class="font-bold text-xs text-gray-800">${i.name}</h5>
+                <p class="text-[10px] text-gray-500 mb-1 uppercase">${i.store}</p>
+                <div class="flex items-center justify-between mt-1.5">
+                    <span class="font-bold text-green-600 text-sm">$${(i.price*i.qty).toFixed(2)}</span>
+                    <div class="flex items-center gap-2 border border-gray-200 rounded px-1.5 py-0.5">
+                        <button class="text-gray-400 hover:text-green-600" onclick="chgQty(${i.id}, '${i.store.replace(/'/g,"\\'")}', -1)"><i class="fas fa-minus text-[8px]"></i></button>
+                        <span class="font-semibold text-xs w-4 text-center">${i.qty}</span>
+                        <button class="text-gray-400 hover:text-green-600" onclick="chgQty(${i.id}, '${i.store.replace(/'/g,"\\'")}', 1)"><i class="fas fa-plus text-[8px]"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>`).join('');
+}
+function chgQty(id, store, d) {
+    const i = cart.find(x => x.id === id && x.store === store);
+    if (!i) return; i.qty += d;
+    if (i.qty <= 0) cart = cart.filter(x => !(x.id === id && x.store === store));
+    updCart();
+}
+
+document.getElementById('cartBtn').addEventListener('click', () => {
+    document.getElementById('cartSidebar').classList.remove('translate-x-full');
+    document.getElementById('cartOverlay').classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+});
+function closeCart() {
+    document.getElementById('cartSidebar').classList.add('translate-x-full');
+    document.getElementById('cartOverlay').classList.add('hidden');
+    document.body.style.overflow = '';
+}
+document.getElementById('cartOverlay').addEventListener('click', closeCart);
+</script>
+</body>
+</html>

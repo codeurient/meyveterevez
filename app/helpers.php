@@ -13,13 +13,21 @@ if (! function_exists('__t')) {
      *
      * Falls back to the key itself if no translation is found — never crashes.
      */
-    function __t(string $key, ?string $locale = null): string
+    /**
+     * @param array<string,string> $replace  e.g. ['count' => '5'] replaces :count in the value
+     */
+    function __t(string $key, array $replace = [], ?string $locale = null): string
     {
         try {
-            return app(TranslationService::class)->get($key, $locale);
+            $value = app(TranslationService::class)->get($key, $locale);
         } catch (\Throwable) {
-            // DB not yet migrated or service unavailable — show the key
-            return $key;
+            $value = $key;
         }
+
+        foreach ($replace as $placeholder => $replacement) {
+            $value = str_replace(':' . $placeholder, (string) $replacement, $value);
+        }
+
+        return $value;
     }
 }

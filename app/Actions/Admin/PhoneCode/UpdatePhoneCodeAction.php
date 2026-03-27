@@ -12,12 +12,13 @@ final class UpdatePhoneCodeAction
     public function execute(PhoneCountryCode $phoneCode, PhoneCodeDTO $dto): PhoneCountryCode
     {
         $phoneCode->update([
-            'name'         => $dto->name,
-            'native_name'  => $dto->nativeName,
-            'phone_code'   => $dto->phoneCode,
-            'trunk_prefix' => $dto->trunkPrefix,
-            'idd_prefix'   => $dto->iddPrefix,
-            'is_active'    => $dto->isActive,
+            'name'              => $dto->name,
+            'name_translations' => $dto->nameTranslations ?: null,
+            'native_name'       => $dto->nativeName,
+            'phone_code'        => $dto->phoneCode,
+            'trunk_prefix'      => $dto->trunkPrefix,
+            'idd_prefix'        => $dto->iddPrefix,
+            'is_active'         => $dto->isActive,
         ]);
 
         return $phoneCode->refresh();

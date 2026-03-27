@@ -12,13 +12,14 @@ final class CreatePhoneCodeAction
     public function execute(PhoneCodeDTO $dto): PhoneCountryCode
     {
         return PhoneCountryCode::create([
-            'code'         => $dto->code,
-            'name'         => $dto->name,
-            'native_name'  => $dto->nativeName,
-            'phone_code'   => $dto->phoneCode,
-            'trunk_prefix' => $dto->trunkPrefix,
-            'idd_prefix'   => $dto->iddPrefix,
-            'is_active'    => $dto->isActive,
+            'code'              => $dto->code,
+            'name'              => $dto->name,
+            'name_translations' => $dto->nameTranslations ?: null,
+            'native_name'       => $dto->nativeName,
+            'phone_code'        => $dto->phoneCode,
+            'trunk_prefix'      => $dto->trunkPrefix,
+            'idd_prefix'        => $dto->iddPrefix,
+            'is_active'         => $dto->isActive,
         ]);
     }
 }

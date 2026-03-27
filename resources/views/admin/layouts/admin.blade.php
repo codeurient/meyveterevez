@@ -44,6 +44,18 @@
 
             <div class="px-3 mt-3 mb-1">
                 <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5 px-2">{{ __t('admin.nav_catalog') }}</p>
+                <a href="{{ route('admin.categories.index') }}"
+                   class="flex items-center gap-2.5 px-2 py-2 rounded-lg text-xs font-medium transition
+                          {{ request()->routeIs('admin.categories.*') ? 'bg-green-600/20 text-green-400' : 'hover:bg-gray-700/50 text-gray-300' }}">
+                    <i class="fas fa-tag w-4 text-center"></i>
+                    {{ __t('admin.nav_categories') }}
+                </a>
+                <a href="{{ route('admin.products.index') }}"
+                   class="flex items-center gap-2.5 px-2 py-2 rounded-lg text-xs font-medium transition
+                          {{ request()->routeIs('admin.products.*') ? 'bg-green-600/20 text-green-400' : 'hover:bg-gray-700/50 text-gray-300' }}">
+                    <i class="fas fa-box w-4 text-center"></i>
+                    {{ __t('admin.nav_products') }}
+                </a>
                 <a href="{{ route('admin.locations.index') }}"
                    class="flex items-center gap-2.5 px-2 py-2 rounded-lg text-xs font-medium transition
                           {{ request()->routeIs('admin.locations.*') ? 'bg-green-600/20 text-green-400' : 'hover:bg-gray-700/50 text-gray-300' }}">
@@ -55,6 +67,22 @@
                           {{ request()->routeIs('admin.phone-codes.*') ? 'bg-green-600/20 text-green-400' : 'hover:bg-gray-700/50 text-gray-300' }}">
                     <i class="fas fa-phone w-4 text-center"></i>
                     {{ __t('admin.nav_phone_codes') }}
+                </a>
+            </div>
+
+            <div class="px-3 mt-3 mb-1">
+                <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5 px-2">{{ __t('admin.nav_settings') }}</p>
+                <a href="{{ route('admin.locales.index') }}"
+                   class="flex items-center gap-2.5 px-2 py-2 rounded-lg text-xs font-medium transition
+                          {{ request()->routeIs('admin.locales.*') ? 'bg-green-600/20 text-green-400' : 'hover:bg-gray-700/50 text-gray-300' }}">
+                    <i class="fas fa-globe w-4 text-center"></i>
+                    {{ __t('admin.nav_locales') }}
+                </a>
+                <a href="{{ route('admin.translations.index') }}"
+                   class="flex items-center gap-2.5 px-2 py-2 rounded-lg text-xs font-medium transition
+                          {{ request()->routeIs('admin.translations.*') ? 'bg-green-600/20 text-green-400' : 'hover:bg-gray-700/50 text-gray-300' }}">
+                    <i class="fas fa-language w-4 text-center"></i>
+                    {{ __t('admin.nav_translations') }}
                 </a>
             </div>
         </nav>

@@ -7,6 +7,7 @@ namespace App\Models;
 use App\Enums\UserRole;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use App\Models\PhoneCountryCode;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -20,6 +21,7 @@ class User extends Authenticatable
         'last_name',
         'email',
         'phone',
+        'phone_country_code',
         'date_of_birth',
         'location_id',
         'avatar_path',
@@ -50,6 +52,11 @@ class User extends Authenticatable
     public function locale(): BelongsTo
     {
         return $this->belongsTo(Locale::class, 'locale_code', 'code');
+    }
+
+    public function phoneCode(): BelongsTo
+    {
+        return $this->belongsTo(PhoneCountryCode::class, 'phone_country_code', 'code');
     }
 
     // ── Accessors ─────────────────────────────────────────────

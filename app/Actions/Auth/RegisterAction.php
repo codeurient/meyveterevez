@@ -13,12 +13,14 @@ final class RegisterAction
     public function execute(RegisterDTO $dto): User
     {
         $user = User::create([
-            'first_name'  => $dto->firstName,
-            'last_name'   => $dto->lastName,
-            'email'       => $dto->email,
-            'password'    => $dto->password,
-            'phone'       => $dto->phone,
-            'locale_code' => app()->getLocale(),
+            'first_name'         => $dto->firstName,
+            'last_name'          => $dto->lastName,
+            'email'              => $dto->email,
+            'password'           => $dto->password,
+            'phone'              => $dto->phone,
+            'phone_country_code' => $dto->phoneCountryCode,
+            'location_id'        => $dto->locationId,
+            'locale_code'        => app()->getLocale(),
         ]);
 
         Auth::login($user);

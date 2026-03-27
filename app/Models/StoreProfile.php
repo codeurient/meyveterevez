@@ -46,12 +46,12 @@ class StoreProfile extends Model
 
     public function scopeActive(Builder $query): Builder
     {
-        return $query->where('is_active', true);
+        return $query->where('store_profiles.is_active', true);
     }
 
     public function scopeVerified(Builder $query): Builder
     {
-        return $query->where('is_verified', true);
+        return $query->where('store_profiles.is_verified', true);
     }
 
     public function getRouteKeyName(): string

@@ -12,13 +12,14 @@ final class CreateLocationAction
     public function execute(LocationDTO $dto): Location
     {
         return Location::create([
-            'name'      => $dto->name,
-            'type'      => $dto->type,
-            'parent_id' => $dto->parentId,
-            'code'      => $dto->code,
-            'latitude'  => $dto->latitude,
-            'longitude' => $dto->longitude,
-            'is_active' => $dto->isActive,
+            'name'              => $dto->name,
+            'name_translations' => $dto->nameTranslations ?: null,
+            'type'              => $dto->type,
+            'parent_id'         => $dto->parentId,
+            'code'              => $dto->code,
+            'latitude'          => $dto->latitude,
+            'longitude'         => $dto->longitude,
+            'is_active'         => $dto->isActive,
         ]);
     }
 }

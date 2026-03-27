@@ -14,6 +14,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             LocaleSeeder::class,
             LocationSeeder::class,
+            PhoneCountryCodeSeeder::class,
             TranslationSeeder::class,
             SliderSeeder::class,
             CategorySeeder::class,

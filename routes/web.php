@@ -10,6 +10,7 @@ use App\Http\Controllers\Web\Auth\RegisterController;
 use App\Http\Controllers\Web\CategoryController;
 use App\Http\Controllers\Web\HomeController;
 use App\Http\Controllers\Web\ProductController;
+use App\Http\Controllers\Web\LocationPickerController;
 use App\Http\Controllers\Web\StoreController;
 use Illuminate\Support\Facades\Route;
 
@@ -22,6 +23,11 @@ use Illuminate\Support\Facades\Route;
 // ==================== PUBLIC ====================
 
 Route::get('/', HomeController::class)->name('home');
+
+// Location picker — stores lat/lng in session
+Route::post('/location/set', LocationPickerController::class)
+    ->name('location.set')
+    ->middleware('throttle:30,1');
 
 // Products
 Route::get('/products',        [ProductController::class, 'index'])->name('products.index');

@@ -15,6 +15,7 @@ class PhoneCountryCode extends Model
     protected $fillable = [
         'code',
         'name',
+        'name_translations',
         'native_name',
         'phone_code',
         'trunk_prefix',
@@ -23,8 +24,20 @@ class PhoneCountryCode extends Model
     ];
 
     protected $casts = [
-        'is_active' => 'boolean',
+        'is_active'         => 'boolean',
+        'name_translations' => 'array',
     ];
+
+    // ── Translation ────────────────────────────────────────────
+
+    /** Returns name in current app locale, falls back to English name. */
+    public function getTranslatedNameAttribute(): string
+    {
+        $locale = app()->getLocale();
+        return $this->name_translations[$locale]
+            ?? $this->name_translations['en']
+            ?? $this->name;
+    }
 
     // ── Scopes ─────────────────────────────────────────────────
 

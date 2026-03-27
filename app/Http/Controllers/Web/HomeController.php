@@ -8,12 +8,13 @@ use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\Slider;
-use App\Models\StoreProfile;
+use App\Services\StoreLocationService;
+use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class HomeController extends Controller
 {
-    public function __invoke(): View
+    public function __invoke(Request $request, StoreLocationService $locationService): View
     {
         $sliders = Slider::active()->main()->get();
 
@@ -47,11 +48,15 @@ class HomeController extends Controller
             ->take(8)
             ->get();
 
-        $featuredStores = StoreProfile::active()
-            ->verified()
-            ->orderByDesc('rating_avg')
-            ->take(8)
-            ->get();
+        // Location-aware store discovery
+        $lat = session('user_lat') !== null ? (float) session('user_lat') : null;
+        $lng = session('user_lng') !== null ? (float) session('user_lng') : null;
+
+        $storeResult    = $locationService->resolve($request->user(), $lat, $lng);
+        $featuredStores = $storeResult['stores'];
+        $storesTitle    = $storeResult['title'];
+        $storesDesc     = $storeResult['desc'];
+        $storesWarning  = $storeResult['warning'];
 
         return view('pages.home.index', compact(
             'sliders',
@@ -61,6 +66,9 @@ class HomeController extends Controller
             'newArrivals',
             'discountedProducts',
             'featuredStores',
+            'storesTitle',
+            'storesDesc',
+            'storesWarning',
         ));
     }
 }

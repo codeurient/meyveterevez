@@ -30,6 +30,7 @@ class TranslationSeeder extends Seeder
             'nav.sign_out'       => ['az' => 'Çıxış',              'en' => 'Sign Out'],
             'nav.menu'           => ['az' => 'Menyu',              'en' => 'Menu'],
             'nav.language'       => ['az' => 'Dil',                'en' => 'Language'],
+            'nav.admin_panel'    => ['az' => 'Admin Panel',       'en' => 'Admin Panel'],
 
             // ── button ────────────────────────────────────────────────────
             'button.add_to_cart'       => ['az' => 'Səbətə əlavə et',       'en' => 'Add to Cart'],
@@ -270,7 +271,8 @@ class TranslationSeeder extends Seeder
             'auth.last_name'                => ['az' => 'Soyad',                             'en' => 'Last name'],
             'auth.last_name_placeholder'    => ['az' => 'Soyadınız',                         'en' => 'Your last name'],
             'auth.phone'                    => ['az' => 'Telefon',                           'en' => 'Phone'],
-            'auth.phone_placeholder'        => ['az' => '+994 XX XXX XX XX',                 'en' => '+994 XX XXX XX XX'],
+            'auth.phone_placeholder'        => ['az' => 'XX XXX XX XX',                       'en' => 'XX XXX XX XX'],
+            'auth.phone_no_leading_zero'    => ['az' => 'Ölkə kodundan sonra 0 yazılmır — nömrəni birbaşa daxil edin', 'en' => 'No leading 0 after country code — enter number directly'],
             'auth.remember_me'              => ['az' => 'Məni xatırla',                      'en' => 'Remember me'],
             'auth.forgot_password'          => ['az' => 'Şifrəni unutmusan?',                'en' => 'Forgot password?'],
             'auth.sign_in'                  => ['az' => 'Daxil ol',                          'en' => 'Sign in'],
@@ -294,6 +296,115 @@ class TranslationSeeder extends Seeder
 
             // ── label (extra) ─────────────────────────────────────────────────
             'label.optional'                => ['az' => 'istəyə bağlı',                     'en' => 'optional'],
+            'label.name'                    => ['az' => 'Ad',                                'en' => 'Name'],
+
+            // ── button (extra) ────────────────────────────────────────────────
+            'button.save'                   => ['az' => 'Saxla',                             'en' => 'Save'],
+            'button.save_changes'           => ['az' => 'Dəyişiklikləri saxla',             'en' => 'Save Changes'],
+            'button.cancel'                 => ['az' => 'Ləğv et',                          'en' => 'Cancel'],
+            'button.edit'                   => ['az' => 'Düzəliş et',                       'en' => 'Edit'],
+            'button.delete'                 => ['az' => 'Sil',                              'en' => 'Delete'],
+
+            // ── auth (extra) ──────────────────────────────────────────────────
+            'auth.sign_out'                 => ['az' => 'Çıxış',                            'en' => 'Sign Out'],
+            'auth.country'                  => ['az' => 'Ölkə',                             'en' => 'Country'],
+            'auth.city'                     => ['az' => 'Şəhər',                            'en' => 'City'],
+            'auth.select_country'           => ['az' => 'Ölkə seçin',                       'en' => 'Select country'],
+            'auth.select_city'              => ['az' => 'Şəhər seçin',                      'en' => 'Select city'],
+            'auth.phone_code'               => ['az' => 'Ölkə kodu',                        'en' => 'Phone code'],
+
+            // ── enum ──────────────────────────────────────────────────────────
+            'enum.role.user'                => ['az' => 'İstifadəçi',                       'en' => 'User'],
+            'enum.role.admin'               => ['az' => 'Admin',                            'en' => 'Admin'],
+
+            // ── admin ─────────────────────────────────────────────────────────
+            'admin.panel'                   => ['az' => 'İdarəetmə Paneli',                 'en' => 'Admin Panel'],
+            'admin.dashboard'               => ['az' => 'İdarə Paneli',                     'en' => 'Dashboard'],
+            'admin.view_site'               => ['az' => 'Saytı gör',                        'en' => 'View Site'],
+
+            // admin nav
+            'admin.nav_general'             => ['az' => 'Ümumi',                            'en' => 'General'],
+            'admin.nav_catalog'             => ['az' => 'Kataloq',                          'en' => 'Catalog'],
+            'admin.nav_dashboard'           => ['az' => 'Əsas səhifə',                      'en' => 'Dashboard'],
+            'admin.nav_locations'           => ['az' => 'Yerlər',                           'en' => 'Locations'],
+            'admin.nav_phone_codes'         => ['az' => 'Telefon kodları',                  'en' => 'Phone Codes'],
+
+            // admin stats
+            'admin.stat_users'              => ['az' => 'İstifadəçilər',                    'en' => 'Users'],
+            'admin.stat_locations'          => ['az' => 'Yerlər',                           'en' => 'Locations'],
+            'admin.stat_countries'          => ['az' => 'Ölkələr',                          'en' => 'Countries'],
+            'admin.stat_codes'              => ['az' => 'Telefon kodları',                  'en' => 'Phone Codes'],
+
+            // admin quick actions
+            'admin.quick_actions'           => ['az' => 'Sürətli əməliyyatlar',             'en' => 'Quick Actions'],
+            'admin.add_location'            => ['az' => 'Yer əlavə et',                     'en' => 'Add Location'],
+            'admin.add_location_desc'       => ['az' => 'Ölkə və ya şəhər əlavə et',       'en' => 'Add a country or city'],
+            'admin.add_phone_code'          => ['az' => 'Telefon kodu əlavə et',            'en' => 'Add Phone Code'],
+            'admin.add_phone_code_desc'     => ['az' => 'Yeni ölkə telefon kodu',           'en' => 'New country phone code'],
+            'admin.location_breakdown'      => ['az' => 'Yer statistikası',                 'en' => 'Location Breakdown'],
+            'admin.countries'               => ['az' => 'Ölkələr',                          'en' => 'Countries'],
+            'admin.cities'                  => ['az' => 'Şəhərlər',                         'en' => 'Cities'],
+
+            // admin table columns
+            'admin.col_type'                => ['az' => 'Növ',                              'en' => 'Type'],
+            'admin.col_parent'              => ['az' => 'Üst yer',                          'en' => 'Parent'],
+            'admin.col_code'                => ['az' => 'Kod',                              'en' => 'Code'],
+            'admin.col_status'              => ['az' => 'Status',                           'en' => 'Status'],
+            'admin.col_actions'             => ['az' => 'Əməliyyatlar',                     'en' => 'Actions'],
+            'admin.col_phone_code'          => ['az' => 'Telefon kodu',                     'en' => 'Phone Code'],
+            'admin.col_native_name'         => ['az' => 'Doğma dil adı',                   'en' => 'Native Name'],
+            'admin.col_trunk_prefix'        => ['az' => 'Trunk prefiks',                    'en' => 'Trunk Prefix'],
+            'admin.col_idd_prefix'          => ['az' => 'IDD prefiks',                      'en' => 'IDD Prefix'],
+            'admin.col_latitude'            => ['az' => 'Enlik',                            'en' => 'Latitude'],
+            'admin.col_longitude'           => ['az' => 'Uzunluq',                          'en' => 'Longitude'],
+            'admin.col_status_active'       => ['az' => 'Aktiv',                            'en' => 'Active'],
+
+            // admin location types
+            'admin.type_country'            => ['az' => 'Ölkə',                             'en' => 'Country'],
+            'admin.type_state'              => ['az' => 'Vilayət',                          'en' => 'State'],
+            'admin.type_city'               => ['az' => 'Şəhər',                            'en' => 'City'],
+
+            // admin form labels / hints
+            'admin.select_country'          => ['az' => 'Ölkə seçin',                      'en' => 'Select Country'],
+            'admin.location_name_placeholder' => ['az' => 'Məs: Azərbaycan',              'en' => 'e.g. Azerbaijan'],
+            'admin.code_hint'               => ['az' => 'ISO 3166-1 alfa-2',               'en' => 'ISO 3166-1 alpha-2'],
+            'admin.in_english'              => ['az' => 'İngiliscə',                        'en' => 'In English'],
+
+            // admin messages
+            'admin.location_created'        => ['az' => 'Yer uğurla əlavə edildi',         'en' => 'Location created successfully'],
+            'admin.location_updated'        => ['az' => 'Yer uğurla yeniləndi',            'en' => 'Location updated successfully'],
+            'admin.location_deleted'        => ['az' => 'Yer uğurla silindi',              'en' => 'Location deleted successfully'],
+            'admin.location_has_children'   => ['az' => 'Bu yerin alt yerləri var',        'en' => 'This location has child entries'],
+            'admin.location_has_users'      => ['az' => 'Bu yer istifadəçilərə bağlıdır', 'en' => 'This location is linked to users'],
+            'admin.phone_code_created'      => ['az' => 'Telefon kodu əlavə edildi',       'en' => 'Phone code created successfully'],
+            'admin.phone_code_updated'      => ['az' => 'Telefon kodu yeniləndi',          'en' => 'Phone code updated successfully'],
+            'admin.phone_code_deleted'      => ['az' => 'Telefon kodu silindi',            'en' => 'Phone code deleted successfully'],
+            'admin.no_locations'            => ['az' => 'Heç bir yer tapılmadı',           'en' => 'No locations found'],
+            'admin.no_phone_codes'          => ['az' => 'Heç bir telefon kodu tapılmadı', 'en' => 'No phone codes found'],
+            'admin.confirm_delete'          => ['az' => 'Silmək istədiyinizə əminsiniz?',  'en' => 'Are you sure you want to delete this?'],
+            'admin.total_records'           => ['az' => ':count qeyd',                      'en' => ':count records'],
+
+            // admin edit labels
+            'admin.edit_location'           => ['az' => 'Yeri düzəliş et',                 'en' => 'Edit Location'],
+            'admin.edit_phone_code'         => ['az' => 'Telefon kodunu düzəliş et',       'en' => 'Edit Phone Code'],
+
+            // ── location picker ───────────────────────────────────────────────
+            'label.set_location'        => ['az' => 'Yer seçin',                          'en' => 'Set location'],
+            'label.location_set'        => ['az' => 'Yer seçildi',                        'en' => 'Location set'],
+            'label.choose_location'     => ['az' => 'Yerini seç',                         'en' => 'Choose your location'],
+            'label.change_location'     => ['az' => 'Yeri dəyiş',                         'en' => 'Change location'],
+            'label.search_address'      => ['az' => 'Ünvan axtar...',                     'en' => 'Search address...'],
+            'label.use_my_location'     => ['az' => 'Mənim yerim',                        'en' => 'Use my location'],
+            'label.no_results'          => ['az' => 'Nəticə tapılmadı',                   'en' => 'No results found'],
+            'button.close'              => ['az' => 'Bağla',                               'en' => 'Close'],
+            'button.clear_location'     => ['az' => 'Yeri sil',                           'en' => 'Clear location'],
+            'button.confirm_location'   => ['az' => 'Yer seç',                            'en' => 'Confirm location'],
+
+            // ── store discovery headings ──────────────────────────────────────
+            'heading.nearby_stores'        => ['az' => 'Yaxınlıqdakı Mağazalar',          'en' => 'Popular Stores Near You'],
+            'heading.nearby_stores_desc'   => ['az' => '50 km ərzindəki aktiv mağazalar', 'en' => 'Active stores within 50 km of your location'],
+            'heading.no_stores_in_city'    => ['az' => 'Seçdiyiniz şəhərdə qeydiyyatdan keçmiş mağaza yoxdur. Aşağıda ölkənizdəki mağazalar göstərilir.',
+                                               'en' => 'There are no registered stores available in your selected city. Showing stores from your country instead.'],
         ];
 
         foreach ($data as $fullKey => $translations) {

@@ -135,18 +135,39 @@
     </section>
     @endif
 
-    {{-- ==================== POPULAR STORES ==================== --}}
+    {{-- ==================== STORES (location-aware) ==================== --}}
     @if($featuredStores->isNotEmpty())
     <section class="py-10 bg-white">
         <div class="max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8">
+
+            {{-- City warning banner --}}
+            @if($storesWarning)
+            <div class="flex items-start gap-3 bg-amber-50 border border-amber-200 rounded-xl px-4 py-3 mb-5 text-sm text-amber-800">
+                <i class="fas fa-info-circle mt-0.5 shrink-0 text-amber-500"></i>
+                <span>{{ __t($storesWarning) }}</span>
+            </div>
+            @endif
+
             <div class="flex items-center justify-between mb-6">
                 <div>
-                    <h3 class="font-montserrat font-bold text-2xl md:text-3xl text-gray-800">{{ __t('heading.popular_stores') }}</h3>
-                    <p class="text-gray-500 mt-1 text-sm">{{ __t('heading.popular_stores_desc') }}</p>
+                    <h3 class="font-montserrat font-bold text-2xl md:text-3xl text-gray-800 flex items-center gap-2">
+                        @if($storesTitle === 'heading.nearby_stores')
+                            <i class="fas fa-map-marker-alt text-green-500 text-xl"></i>
+                        @endif
+                        {{ __t($storesTitle) }}
+                    </h3>
+                    <p class="text-gray-500 mt-1 text-sm">{{ __t($storesDesc) }}</p>
                 </div>
-                <a href="{{ route('stores.index') }}" class="text-green-600 font-semibold text-sm hover:text-green-700 flex items-center gap-2">
-                    {{ __t('button.view_all_stores') }} <i class="fas fa-arrow-right"></i>
-                </a>
+                <div class="flex items-center gap-3">
+                    <button id="changeLocationBtn"
+                            class="hidden lg:flex items-center gap-1.5 text-xs text-gray-500 hover:text-green-600 border border-gray-200 hover:border-green-300 rounded-lg px-3 py-1.5 transition">
+                        <i class="fas fa-map-marker-alt"></i>
+                        {{ __t('label.change_location') }}
+                    </button>
+                    <a href="{{ route('stores.index') }}" class="text-green-600 font-semibold text-sm hover:text-green-700 flex items-center gap-2">
+                        {{ __t('button.view_all_stores') }} <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
             </div>
             <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
                 @foreach($featuredStores as $store)
@@ -215,6 +236,15 @@
 
 @section('scripts')
 <script>
+    // ── Wire "Change Location" button on stores section ──────────────────
+    document.getElementById('changeLocationBtn')?.addEventListener('click', function () {
+        if (typeof openLocationPicker !== 'undefined') {
+            openLocationPicker();
+        } else {
+            document.getElementById('openLocationPicker')?.click();
+        }
+    });
+
     // ==================== CAROUSEL ====================
     let currentSlide = 0;
     const totalSlides = {{ $sliders->count() }};

@@ -14,6 +14,7 @@ class Location extends Model
     protected $fillable = [
         'parent_id',
         'name',
+        'name_translations',
         'type',
         'code',
         'latitude',
@@ -22,10 +23,22 @@ class Location extends Model
     ];
 
     protected $casts = [
-        'latitude'  => 'float',
-        'longitude' => 'float',
-        'is_active' => 'boolean',
+        'latitude'         => 'float',
+        'longitude'        => 'float',
+        'is_active'        => 'boolean',
+        'name_translations' => 'array',
     ];
+
+    // ── Translation ────────────────────────────────────────────
+
+    /** Returns name in current app locale, falls back to 'name' column. */
+    public function getTranslatedNameAttribute(): string
+    {
+        $locale = app()->getLocale();
+        return $this->name_translations[$locale]
+            ?? $this->name_translations['en']
+            ?? $this->name;
+    }
 
     // ── Relationships ──────────────────────────────────────────
 

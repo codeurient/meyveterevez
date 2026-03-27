@@ -41,7 +41,7 @@
 <body class="antialiased">
 
     {{-- ==================== TOAST NOTIFICATION ==================== --}}
-    <div id="toast" class="toast fixed top-24 right-6 z-50 bg-white rounded-xl shadow-2xl p-4 flex items-center gap-3 min-w-[300px]">
+    <div id="toast" class="toast fixed top-24 right-6 z-[99999] bg-white rounded-xl shadow-2xl p-4 flex items-center gap-3 min-w-[300px]">
         <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center">
             <i class="fas fa-check-circle text-green-500 text-lg"></i>
         </div>
@@ -210,10 +210,6 @@
                     <input type="text" name="q" placeholder="{{ __t('label.search_mobile_placeholder') }}"
                         class="w-full bg-gray-100 border-2 border-transparent rounded-xl py-2.5 pl-10 pr-11 text-sm focus:border-green-500">
                     <i class="fas fa-search absolute left-3.5 top-3 text-gray-400 pointer-events-none"></i>
-                    <button type="button" onclick="openLocationPicker()" title="{{ __t('label.set_location') }}"
-                        class="absolute right-9 top-1/2 -translate-y-1/2 w-7 h-7 flex items-center justify-center text-green-500 hover:text-green-600 transition">
-                        <i class="fas fa-map-pin text-sm"></i>
-                    </button>
                     <button type="button" title="{{ __t('label.filters') }}"
                         class="mobile-search-filter-btn absolute right-2 top-1/2 -translate-y-1/2 w-7 h-7 flex items-center justify-center text-gray-500 hover:text-green-600 transition">
                         <i class="fas fa-sliders-h text-sm"></i>
@@ -499,9 +495,13 @@
             {{-- Search bar --}}
             <div class="px-4 py-3 shrink-0 relative">
                 <div class="relative">
+                    {{-- Left search icon: absolute inside input, 8px+ gap via pl-9 --}}
+                    <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs pointer-events-none z-10"></i>
                     <input id="locationSearchInput" type="text"
+                           autocomplete="off"
                            placeholder="{{ __t('label.search_address') }}"
-                           class="w-full bg-gray-50 border border-gray-200 rounded-xl py-2 pl-4 pr-10 text-sm focus:outline-none focus:border-green-500 focus:bg-white transition">
+                           class="w-full bg-gray-50 border border-gray-200 rounded-xl py-2 pl-9 pr-10 text-sm focus:outline-none focus:border-green-500 focus:bg-white transition">
+                    {{-- Right GPS button: absolute inside input --}}
                     <button id="useMyLocation"
                             type="button"
                             class="absolute right-2 top-1/2 -translate-y-1/2 w-7 h-7 flex items-center justify-center text-green-500 hover:text-green-600 transition"
@@ -661,21 +661,43 @@
 
         // ── Use my location ──────────────────────────────────────────────
         useMyLocBtn?.addEventListener('click', function () {
-            if (!navigator.geolocation) return;
+            if (!navigator.geolocation) {
+                showToast('{{ __t('message.location_not_supported') }}', 'error');
+                return;
+            }
+            if (!map) {
+                showToast('{{ __t('message.location_error') }}', 'error');
+                return;
+            }
+
+            const onSuccess = pos => {
+                map.setView([pos.coords.latitude, pos.coords.longitude], 15);
+                useMyLocBtn.disabled = false;
+                useMyLocBtn.innerHTML = '<i class="fas fa-crosshairs text-sm"></i>';
+                showToast('{{ __t('message.location_found') }}', 'success');
+            };
+
+            const onError = err => {
+                useMyLocBtn.disabled = false;
+                useMyLocBtn.innerHTML = '<i class="fas fa-crosshairs text-sm"></i>';
+                if (err.code === 1) {
+                    showToast('{{ __t('message.location_permission_denied') }}', 'error');
+                } else if (err.code === 3) {
+                    showToast('{{ __t('message.location_timeout') }}', 'error');
+                } else {
+                    showToast('{{ __t('message.location_error') }}', 'error');
+                }
+            };
+
             useMyLocBtn.disabled = true;
             useMyLocBtn.innerHTML = '<i class="fas fa-spinner fa-spin text-sm"></i>';
-            navigator.geolocation.getCurrentPosition(
-                pos => {
-                    map.setView([pos.coords.latitude, pos.coords.longitude], 15);
-                    useMyLocBtn.disabled = false;
-                    useMyLocBtn.innerHTML = '<i class="fas fa-crosshairs text-sm"></i>';
-                },
-                () => {
-                    useMyLocBtn.disabled = false;
-                    useMyLocBtn.innerHTML = '<i class="fas fa-crosshairs text-sm"></i>';
-                },
-                { enableHighAccuracy: true, timeout: 8000 }
-            );
+
+            // Try without high accuracy first (works on desktops/laptops without GPS)
+            navigator.geolocation.getCurrentPosition(onSuccess, onError, {
+                enableHighAccuracy: false,
+                timeout: 15000,
+                maximumAge: 60000,
+            });
         });
 
         // ── Address search (Nominatim) ───────────────────────────────────
@@ -692,25 +714,45 @@
             })
             .then(r => r.json())
             .then(results => {
+                resultsBox.innerHTML = '';
+
                 if (!results.length) {
-                    resultsBox.innerHTML = '<p class="px-4 py-3 text-gray-400 text-xs">{{ __t('label.no_results') }}</p>';
+                    const empty = document.createElement('p');
+                    empty.className = 'px-4 py-3 text-gray-400 text-xs italic';
+                    empty.textContent = '{{ __t('label.no_results') }}';
+                    resultsBox.appendChild(empty);
                     resultsBox.classList.remove('hidden');
                     return;
                 }
-                resultsBox.innerHTML = results.map(r =>
-                    '<button class="w-full text-left px-4 py-2.5 hover:bg-green-50 transition flex items-center gap-2 text-sm text-gray-700 border-b border-gray-50 last:border-0"' +
-                    ' data-lat="' + r.lat + '" data-lng="' + r.lon + '">' +
-                    '<i class="fas fa-map-pin text-green-400 shrink-0 text-xs"></i>' +
-                    '<span class="truncate">' + r.display_name + '</span></button>'
-                ).join('');
-                resultsBox.classList.remove('hidden');
-                resultsBox.querySelectorAll('button').forEach(btn => {
+
+                // Build items with textContent — never innerHTML with user data (XSS-safe)
+                results.forEach(r => {
+                    const btn = document.createElement('button');
+                    btn.type = 'button';
+                    btn.className = 'w-full text-left px-4 py-2.5 hover:bg-green-50 transition flex items-center gap-2 text-sm text-gray-700 border-b border-gray-50 last:border-0';
+                    btn.dataset.lat = r.lat;
+                    btn.dataset.lng = r.lon;
+
+                    const icon = document.createElement('i');
+                    icon.className = 'fas fa-map-pin text-green-400 shrink-0 text-xs';
+
+                    const span = document.createElement('span');
+                    span.className = 'truncate';
+                    span.textContent = r.display_name; // safe: textContent escapes automatically
+
+                    btn.appendChild(icon);
+                    btn.appendChild(span);
+
                     btn.addEventListener('click', function () {
                         map.setView([parseFloat(this.dataset.lat), parseFloat(this.dataset.lng)], 15);
-                        searchInput.value = this.querySelector('span').textContent;
+                        searchInput.value = span.textContent;
                         resultsBox.classList.add('hidden');
                     });
+
+                    resultsBox.appendChild(btn);
                 });
+
+                resultsBox.classList.remove('hidden');
             })
             .catch(() => {});
         }

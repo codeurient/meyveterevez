@@ -210,7 +210,15 @@ class TranslationSeeder extends Seeder
             // ── product_detail (organic badge) ────────────────────────────
             'product_detail.organic_certified' => ['az' => 'USDA Üzvi Sertifikatı', 'en' => 'USDA Organic Certified'],
 
+            // ── label (map / geocoding) ───────────────────────────────────
+            'label.map_search'      => ['az' => 'Xəritə axtarışı',                                            'en' => 'Map search'],
+            'label.map_click_hint'  => ['az' => 'Koordinatları dəqiqləşdirmək üçün xəritəyə klikləyin və ya markeri sürükləyin', 'en' => 'Click the map or drag the marker to fine-tune coordinates'],
+
+            // ── placeholder (map) ─────────────────────────────────────────
+            'placeholder.search_location' => ['az' => 'Yer axtar... (minimum 3 hərf)', 'en' => 'Search location... (min 3 chars)'],
+
             // ── message ───────────────────────────────────────────────────
+            'message.no_results'    => ['az' => 'Nəticə tapılmadı',    'en' => 'No results found'],
             'message.added_to_cart' => ['az' => 'Səbətə əlavə edildi', 'en' => 'Added to cart'],
 
             // ── search (extra keys) ───────────────────────────────────────
@@ -248,6 +256,11 @@ class TranslationSeeder extends Seeder
             // ── message (favorites) ───────────────────────────────────────────
             'message.added_to_favorites'     => ['az' => 'Sevimlilərə əlavə edildi', 'en' => 'Added to favorites'],
             'message.removed_from_favorites' => ['az' => 'Sevimlilərdən silindi',    'en' => 'Removed from favorites'],
+            'message.location_found'             => ['az' => 'Yeriniz tapıldı',                       'en' => 'Your location was found'],
+            'message.location_permission_denied' => ['az' => 'Yerə giriş icazəsi verilmədi',         'en' => 'Location permission denied'],
+            'message.location_error'             => ['az' => 'Yeriniz müəyyən edilə bilmədi',         'en' => 'Could not determine your location'],
+            'message.location_not_supported'     => ['az' => 'Brauzer coğrafi yeri dəstəkləmir',      'en' => 'Geolocation is not supported by your browser'],
+            'message.location_timeout'           => ['az' => 'Yer müəyyənləşdirmə vaxtı bitdi',        'en' => 'Location request timed out'],
 
             // ── auth ──────────────────────────────────────────────────────────
             'auth.login'                    => ['az' => 'Daxil ol',                          'en' => 'Login'],
@@ -405,6 +418,127 @@ class TranslationSeeder extends Seeder
             'heading.nearby_stores_desc'   => ['az' => '50 km ərzindəki aktiv mağazalar', 'en' => 'Active stores within 50 km of your location'],
             'heading.no_stores_in_city'    => ['az' => 'Seçdiyiniz şəhərdə qeydiyyatdan keçmiş mağaza yoxdur. Aşağıda ölkənizdəki mağazalar göstərilir.',
                                                'en' => 'There are no registered stores available in your selected city. Showing stores from your country instead.'],
+
+            // ── label (location picker) ───────────────────────────────────────
+            'label.move_map_to_select'  => ['az' => 'Seçmək üçün xəritəni hərəkət etdirin', 'en' => 'Move map to select'],
+
+            // ── admin nav (catalog & settings) ───────────────────────────────
+            'admin.nav_categories'      => ['az' => 'Kateqoriyalar',                         'en' => 'Categories'],
+            'admin.nav_products'        => ['az' => 'Məhsullar',                             'en' => 'Products'],
+            'admin.nav_locales'         => ['az' => 'Dillər',                                'en' => 'Locales'],
+            'admin.nav_translations'    => ['az' => 'Tərcümələr',                            'en' => 'Translations'],
+            'admin.nav_settings'        => ['az' => 'Parametrlər',                           'en' => 'Settings'],
+
+            // admin quick-add buttons
+            'admin.add_category'        => ['az' => 'Kateqoriya əlavə et',                  'en' => 'Add Category'],
+            'admin.add_locale'          => ['az' => 'Dil əlavə et',                         'en' => 'Add Locale'],
+            'admin.add_product'         => ['az' => 'Məhsul əlavə et',                      'en' => 'Add Product'],
+            'admin.add_translation'     => ['az' => 'Tərcümə əlavə et',                     'en' => 'Add Translation'],
+
+            // admin filter/select placeholders
+            'admin.all_categories'      => ['az' => 'Bütün kateqoriyalar',                  'en' => 'All Categories'],
+            'admin.all_groups'          => ['az' => 'Bütün qruplar',                        'en' => 'All Groups'],
+            'admin.all_locales'         => ['az' => 'Bütün dillər',                         'en' => 'All Locales'],
+            'admin.all_statuses'        => ['az' => 'Bütün statuslar',                      'en' => 'All Statuses'],
+            'admin.root_category'       => ['az' => 'Kök kateqoriya',                       'en' => 'Root Category'],
+            'admin.select_category'     => ['az' => 'Kateqoriya seçin',                     'en' => 'Select category'],
+            'admin.select_store'        => ['az' => 'Mağaza seçin',                         'en' => 'Select store'],
+
+            // admin CRUD messages — categories
+            'admin.category_created'    => ['az' => 'Kateqoriya uğurla əlavə edildi',       'en' => 'Category created successfully'],
+            'admin.category_updated'    => ['az' => 'Kateqoriya uğurla yeniləndi',          'en' => 'Category updated successfully'],
+            'admin.category_deleted'    => ['az' => 'Kateqoriya uğurla silindi',            'en' => 'Category deleted successfully'],
+            'admin.category_delete_has_children_error' => ['az' => 'Bu kateqoriyanın alt kateqoriyaları var. Əvvəlcə onları silin.', 'en' => 'This category has child categories. Delete them first.'],
+
+            // admin CRUD messages — locales
+            'admin.locale_created'      => ['az' => 'Dil uğurla əlavə edildi',              'en' => 'Locale created successfully'],
+            'admin.locale_updated'      => ['az' => 'Dil uğurla yeniləndi',                 'en' => 'Locale updated successfully'],
+            'admin.locale_deleted'      => ['az' => 'Dil uğurla silindi',                   'en' => 'Locale deleted successfully'],
+            'admin.locale_delete_default_error' => ['az' => 'Standart dili silmək olmaz.',  'en' => 'Cannot delete the default locale.'],
+
+            // admin CRUD messages — products
+            'admin.product_created'     => ['az' => 'Məhsul uğurla əlavə edildi',           'en' => 'Product created successfully'],
+            'admin.product_updated'     => ['az' => 'Məhsul uğurla yeniləndi',              'en' => 'Product updated successfully'],
+            'admin.product_deleted'     => ['az' => 'Məhsul uğurla silindi',                'en' => 'Product deleted successfully'],
+
+            // admin CRUD messages — translations
+            'admin.translation_created' => ['az' => 'Tərcümə uğurla əlavə edildi',         'en' => 'Translation created successfully'],
+            'admin.translation_updated' => ['az' => 'Tərcümə uğurla yeniləndi',            'en' => 'Translation updated successfully'],
+            'admin.translation_deleted' => ['az' => 'Tərcümə uğurla silindi',              'en' => 'Translation deleted successfully'],
+
+            // admin empty-state messages
+            'admin.no_categories'       => ['az' => 'Heç bir kateqoriya tapılmadı',         'en' => 'No categories found'],
+            'admin.no_locales'          => ['az' => 'Heç bir dil tapılmadı',                'en' => 'No locales found'],
+            'admin.no_products'         => ['az' => 'Heç bir məhsul tapılmadı',             'en' => 'No products found'],
+            'admin.no_translations'     => ['az' => 'Heç bir tərcümə tapılmadı',           'en' => 'No translations found'],
+
+            // admin edit page titles
+            'admin.edit_category'       => ['az' => 'Kateqoriyanı düzəliş et',             'en' => 'Edit Category'],
+            'admin.edit_locale'         => ['az' => 'Dili düzəliş et',                     'en' => 'Edit Locale'],
+            'admin.edit_product'        => ['az' => 'Məhsulu düzəliş et',                  'en' => 'Edit Product'],
+            'admin.edit_translation'    => ['az' => 'Tərcüməni düzəliş et',                'en' => 'Edit Translation'],
+
+            // admin table column headers
+            'admin.col_category'        => ['az' => 'Kateqoriya',                          'en' => 'Category'],
+            'admin.col_color'           => ['az' => 'Rəng',                                'en' => 'Color'],
+            'admin.col_default'         => ['az' => 'Standart',                            'en' => 'Default'],
+            'admin.col_dir'             => ['az' => 'İstiqamət',                           'en' => 'Direction'],
+            'admin.col_flag'            => ['az' => 'Bayraq',                              'en' => 'Flag'],
+            'admin.col_flags'           => ['az' => 'Bayraqlar',                           'en' => 'Flags'],
+            'admin.col_group'           => ['az' => 'Qrup',                                'en' => 'Group'],
+            'admin.col_icon'            => ['az' => 'İkon',                                'en' => 'Icon'],
+            'admin.col_key'             => ['az' => 'Açar',                                'en' => 'Key'],
+            'admin.col_level'           => ['az' => 'Səviyyə',                             'en' => 'Level'],
+            'admin.col_locale'          => ['az' => 'Dil',                                 'en' => 'Locale'],
+            'admin.col_slug'            => ['az' => 'Slug',                                'en' => 'Slug'],
+            'admin.col_sort_order'      => ['az' => 'Sıra',                                'en' => 'Sort Order'],
+            'admin.col_stock'           => ['az' => 'Stok',                                'en' => 'Stock'],
+            'admin.col_store'           => ['az' => 'Mağaza',                              'en' => 'Store'],
+            'admin.col_unit'            => ['az' => 'Vahid',                               'en' => 'Unit'],
+            'admin.col_value'           => ['az' => 'Dəyər',                               'en' => 'Value'],
+
+            // admin status labels
+            'admin.status_active'       => ['az' => 'Aktiv',                               'en' => 'Active'],
+            'admin.status_draft'        => ['az' => 'Qaralama',                            'en' => 'Draft'],
+            'admin.status_inactive'     => ['az' => 'Deaktiv',                             'en' => 'Inactive'],
+
+            // ── label (product form fields) ───────────────────────────────────
+            'label.bunch'               => ['az' => 'Dəstə',                               'en' => 'Bunch'],
+            'label.description'         => ['az' => 'Təsvir',                              'en' => 'Description'],
+            'label.discount'            => ['az' => 'Endirim (%)',                         'en' => 'Discount (%)'],
+            'label.featured'            => ['az' => 'Seçilmiş',                            'en' => 'Featured'],
+            'label.original_price'      => ['az' => 'Əsas qiymət (qəpik)',                'en' => 'Original price (cents)'],
+            'label.piece'               => ['az' => 'Ədəd',                                'en' => 'Piece'],
+            'label.top_seller'          => ['az' => 'Çox satılan',                         'en' => 'Top Seller'],
+
+            // ── placeholder ───────────────────────────────────────────────────
+            'placeholder.search'        => ['az' => 'Axtar...',                            'en' => 'Search...'],
+            'placeholder.translation_value' => ['az' => 'Tərcümə dəyərini daxil edin',    'en' => 'Enter translation value'],
+
+            // ── blog (nav + headings) ─────────────────────────────────────────
+            'nav.blog'                      => ['az' => 'Bloq',                            'en' => 'Blog'],
+            'heading.blog'                  => ['az' => 'Xəbərlər və məqalələr',           'en' => 'News & Articles'],
+            'heading.latest_posts'          => ['az' => 'Son yazılar',                     'en' => 'Latest Posts'],
+            'heading.no_posts_yet'          => ['az' => 'Hələ heç bir yazı yoxdur',        'en' => 'No posts yet'],
+            'label.read_more'               => ['az' => 'Daha çox oxu',                    'en' => 'Read More'],
+            'label.min_read'                => ['az' => 'dəq oxunma',                      'en' => 'min read'],
+            'label.published'               => ['az' => 'Dərc edilib',                     'en' => 'Published'],
+
+            // ── blog (admin) ──────────────────────────────────────────────────
+            'admin.nav_content'             => ['az' => 'Məzmun',                          'en' => 'Content'],
+            'admin.nav_blog_posts'          => ['az' => 'Blog Yazıları',                   'en' => 'Blog Posts'],
+            'admin.add_blog_post'           => ['az' => 'Blog Yazısı Əlavə Et',            'en' => 'Add Blog Post'],
+            'admin.edit_blog_post'          => ['az' => 'Blog Yazısını Düzəlt',            'en' => 'Edit Blog Post'],
+            'admin.blog_post_created'       => ['az' => 'Blog yazısı əlavə edildi',        'en' => 'Blog post created'],
+            'admin.blog_post_updated'       => ['az' => 'Blog yazısı yeniləndi',           'en' => 'Blog post updated'],
+            'admin.blog_post_deleted'       => ['az' => 'Blog yazısı silindi',             'en' => 'Blog post deleted'],
+            'admin.no_blog_posts'           => ['az' => 'Blog yazısı yoxdur',              'en' => 'No blog posts yet'],
+            'admin.col_title'               => ['az' => 'Başlıq',                          'en' => 'Title'],
+            'admin.col_content'             => ['az' => 'Məzmun',                          'en' => 'Content'],
+            'admin.col_excerpt'             => ['az' => 'Xülasə',                          'en' => 'Excerpt'],
+            'admin.col_published'           => ['az' => 'Dərc',                            'en' => 'Published'],
+            'admin.col_published_at'        => ['az' => 'Dərc tarixi',                     'en' => 'Published At'],
+            'admin.publish_post'            => ['az' => 'Dərc et',                         'en' => 'Publish'],
         ];
 
         foreach ($data as $fullKey => $translations) {

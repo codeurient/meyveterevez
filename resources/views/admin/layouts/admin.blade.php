@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @yield('styles')
 </head>
 <body class="bg-gray-100 font-sans text-sm text-gray-800 min-h-screen">
 
@@ -39,6 +40,16 @@
                           {{ request()->routeIs('admin.dashboard') ? 'bg-green-600/20 text-green-400' : 'hover:bg-gray-700/50 text-gray-300' }}">
                     <i class="fas fa-tachometer-alt w-4 text-center"></i>
                     {{ __t('admin.nav_dashboard') }}
+                </a>
+            </div>
+
+            <div class="px-3 mt-3 mb-1">
+                <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5 px-2">{{ __t('admin.nav_content') }}</p>
+                <a href="{{ route('admin.blog-posts.index') }}"
+                   class="flex items-center gap-2.5 px-2 py-2 rounded-lg text-xs font-medium transition
+                          {{ request()->routeIs('admin.blog-posts.*') ? 'bg-green-600/20 text-green-400' : 'hover:bg-gray-700/50 text-gray-300' }}">
+                    <i class="fas fa-newspaper w-4 text-center"></i>
+                    {{ __t('admin.nav_blog_posts') }}
                 </a>
             </div>
 

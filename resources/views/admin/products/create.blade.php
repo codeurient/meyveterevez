@@ -9,8 +9,8 @@
         <form method="POST" action="{{ route('admin.products.store') }}" class="space-y-4" enctype="multipart/form-data">
             @csrf
 
+            {{-- Category + Store --}}
             <div class="grid grid-cols-2 gap-3">
-                {{-- Category --}}
                 <div>
                     <label class="block text-xs font-semibold text-gray-600 mb-1.5">{{ __t('admin.col_category') }}</label>
                     <select name="category_id" required
@@ -24,8 +24,6 @@
                     </select>
                     @error('category_id') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
                 </div>
-
-                {{-- Store --}}
                 <div>
                     <label class="block text-xs font-semibold text-gray-600 mb-1.5">{{ __t('admin.col_store') }}</label>
                     <select name="store_profile_id" required
@@ -41,13 +39,22 @@
                 </div>
             </div>
 
-            {{-- Name --}}
+            {{-- Name (bilingual) --}}
             <div>
                 <label class="block text-xs font-semibold text-gray-600 mb-1.5">{{ __t('label.name') }}</label>
-                <input type="text" name="name" value="{{ old('name') }}" required
-                       class="w-full px-3 py-2 border border-gray-200 rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-green-500 bg-gray-50 focus:bg-white transition {{ $errors->has('name') ? 'border-red-300' : '' }}"
-                       placeholder="Qırmızı Alma">
-                @error('name') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+                <div class="space-y-2">
+                    @foreach(['az' => 'AZ 🇦🇿', 'en' => 'EN 🇬🇧'] as $locale => $flag)
+                    <div class="flex items-center gap-2">
+                        <span class="w-12 text-xs font-bold text-gray-500 shrink-0">{{ $flag }}</span>
+                        <input type="text" name="name_translations[{{ $locale }}]"
+                               value="{{ old('name_translations.' . $locale) }}"
+                               {{ $locale === 'az' ? 'required' : '' }}
+                               class="flex-1 px-3 py-2 border border-gray-200 rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-green-500 bg-gray-50 focus:bg-white transition {{ $errors->has('name_translations.' . $locale) ? 'border-red-300' : '' }}"
+                               placeholder="{{ $locale === 'az' ? 'Qırmızı Alma' : 'Red Apple' }}">
+                    </div>
+                    @endforeach
+                </div>
+                @error('name_translations.az') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
             </div>
 
             {{-- Slug --}}
@@ -59,11 +66,21 @@
                 @error('slug') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
             </div>
 
-            {{-- Description --}}
+            {{-- Description (bilingual) --}}
             <div>
-                <label class="block text-xs font-semibold text-gray-600 mb-1.5">{{ __t('label.description') }}</label>
-                <textarea name="description" rows="3"
-                          class="w-full px-3 py-2 border border-gray-200 rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-green-500 bg-gray-50 focus:bg-white transition">{{ old('description') }}</textarea>
+                <label class="block text-xs font-semibold text-gray-600 mb-1.5">
+                    {{ __t('label.description') }}
+                    <span class="text-gray-400 font-normal">({{ __t('label.optional') }})</span>
+                </label>
+                <div class="space-y-2">
+                    @foreach(['az' => 'AZ 🇦🇿', 'en' => 'EN 🇬🇧'] as $locale => $flag)
+                    <div class="flex items-start gap-2">
+                        <span class="w-12 text-xs font-bold text-gray-500 shrink-0 pt-2">{{ $flag }}</span>
+                        <textarea name="description_translations[{{ $locale }}]" rows="2"
+                                  class="flex-1 px-3 py-2 border border-gray-200 rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-green-500 bg-gray-50 focus:bg-white transition">{{ old('description_translations.' . $locale) }}</textarea>
+                    </div>
+                    @endforeach
+                </div>
             </div>
 
             {{-- Price --}}
@@ -94,8 +111,8 @@
                 </div>
             </div>
 
+            {{-- Unit + Stock --}}
             <div class="grid grid-cols-2 gap-3">
-                {{-- Unit --}}
                 <div>
                     <label class="block text-xs font-semibold text-gray-600 mb-1.5">{{ __t('admin.col_unit') }}</label>
                     <select name="unit"
@@ -106,8 +123,6 @@
                         <option value="g"     {{ old('unit') === 'g'     ? 'selected' : '' }}>g</option>
                     </select>
                 </div>
-
-                {{-- Stock --}}
                 <div>
                     <label class="block text-xs font-semibold text-gray-600 mb-1.5">{{ __t('admin.col_stock') }}</label>
                     <input type="number" name="stock_quantity" value="{{ old('stock_quantity', 0) }}" min="0"
@@ -121,8 +136,8 @@
                 <label class="block text-xs font-semibold text-gray-600 mb-1.5">{{ __t('admin.col_status') }}</label>
                 <select name="status"
                         class="w-full px-3 py-2 border border-gray-200 rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-green-500 bg-gray-50 focus:bg-white transition">
-                    <option value="active" {{ old('status', 'active') === 'active' ? 'selected' : '' }}>{{ __t('admin.status_active') }}</option>
-                    <option value="draft"  {{ old('status') === 'draft'  ? 'selected' : '' }}>{{ __t('admin.status_draft') }}</option>
+                    <option value="active"   {{ old('status', 'active') === 'active'   ? 'selected' : '' }}>{{ __t('admin.status_active') }}</option>
+                    <option value="draft"    {{ old('status') === 'draft'    ? 'selected' : '' }}>{{ __t('admin.status_draft') }}</option>
                     <option value="inactive" {{ old('status') === 'inactive' ? 'selected' : '' }}>{{ __t('admin.status_inactive') }}</option>
                 </select>
             </div>

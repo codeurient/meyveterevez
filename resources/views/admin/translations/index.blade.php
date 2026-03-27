@@ -58,7 +58,7 @@
                         {{ $translation->group }}
                     </span>
                 </td>
-                <td class="px-4 py-2.5 font-semibold text-gray-500 uppercase">{{ $translation->locale }}</td>
+                <td class="px-4 py-2.5 font-semibold text-gray-500 uppercase">{{ $translation->locale_code }}</td>
                 <td class="px-4 py-2.5 text-gray-700 max-w-xs truncate">{{ $translation->value }}</td>
                 <td class="px-4 py-2.5 text-center">
                     <span class="inline-block w-2 h-2 rounded-full {{ $translation->is_active ? 'bg-green-500' : 'bg-gray-300' }}"></span>

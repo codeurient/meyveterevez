@@ -34,12 +34,13 @@
                     <div class="flex items-center gap-2">
                         <span class="w-12 text-xs font-bold text-gray-500 shrink-0">{{ $flag }}</span>
                         <input type="text" name="name_translations[{{ $locale }}]"
-                               value="{{ old('name_translations.' . $locale, $category->getTranslation('name', $locale, false)) }}"
+                               value="{{ old('name_translations.' . $locale, $category->name_translations[$locale] ?? ($locale === 'az' ? $category->name : '')) }}"
                                {{ $locale === 'az' ? 'required' : '' }}
-                               class="flex-1 px-3 py-2 border border-gray-200 rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-green-500 bg-gray-50 focus:bg-white transition">
+                               class="flex-1 px-3 py-2 border border-gray-200 rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-green-500 bg-gray-50 focus:bg-white transition {{ $errors->has('name_translations.' . $locale) ? 'border-red-300' : '' }}">
                     </div>
                     @endforeach
                 </div>
+                @error('name_translations.az') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
             </div>
 
             <div>

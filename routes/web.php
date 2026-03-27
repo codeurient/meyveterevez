@@ -2,11 +2,17 @@
 
 declare(strict_types=1);
 
+use App\Http\Controllers\Admin\BlogPostController as AdminBlogPostController;
+use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
+use App\Http\Controllers\Admin\LocaleController as AdminLocaleController;
 use App\Http\Controllers\Admin\LocationController as AdminLocationController;
 use App\Http\Controllers\Admin\PhoneCodeController as AdminPhoneCodeController;
+use App\Http\Controllers\Admin\ProductController as AdminProductController;
+use App\Http\Controllers\Admin\TranslationController as AdminTranslationController;
 use App\Http\Controllers\Web\Auth\LoginController;
 use App\Http\Controllers\Web\Auth\RegisterController;
+use App\Http\Controllers\Web\BlogController;
 use App\Http\Controllers\Web\CategoryController;
 use App\Http\Controllers\Web\HomeController;
 use App\Http\Controllers\Web\ProductController;
@@ -37,6 +43,10 @@ Route::get('/products/{slug}', [ProductController::class, 'show'])->name('produc
 // Categories
 Route::get('/categories',        [CategoryController::class, 'index'])->name('categories.index');
 Route::get('/categories/{slug}', [CategoryController::class, 'show'])->name('categories.show');
+
+// Blog
+Route::get('/blog',        [BlogController::class, 'index'])->name('blog.index');
+Route::get('/blog/{blogPost}', [BlogController::class, 'show'])->name('blog.show');
 
 // Stores
 Route::get('/stores',        [StoreController::class, 'index'])->name('stores.index');
@@ -76,8 +86,13 @@ Route::prefix(config('admin.path'))
     ->name('admin.')
     ->group(function () {
         Route::get('/',             AdminDashboardController::class)->name('dashboard');
-        Route::resource('locations', AdminLocationController::class);
-        Route::resource('phone-codes', AdminPhoneCodeController::class)->parameters([
+        Route::resource('blog-posts',   AdminBlogPostController::class)->parameters(['blog-posts' => 'blogPost']);
+        Route::resource('categories',   AdminCategoryController::class);
+        Route::resource('products',     AdminProductController::class);
+        Route::resource('locales',      AdminLocaleController::class);
+        Route::resource('translations', AdminTranslationController::class);
+        Route::resource('locations',    AdminLocationController::class);
+        Route::resource('phone-codes',  AdminPhoneCodeController::class)->parameters([
             'phone-codes' => 'phoneCode',
         ]);
     });

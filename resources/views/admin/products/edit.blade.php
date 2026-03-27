@@ -9,6 +9,7 @@
         <form method="POST" action="{{ route('admin.products.update', $product) }}" class="space-y-4" enctype="multipart/form-data">
             @csrf @method('PUT')
 
+            {{-- Category + Store --}}
             <div class="grid grid-cols-2 gap-3">
                 <div>
                     <label class="block text-xs font-semibold text-gray-600 mb-1.5">{{ __t('admin.col_category') }}</label>
@@ -36,13 +37,24 @@
                 </div>
             </div>
 
+            {{-- Name (bilingual) --}}
             <div>
                 <label class="block text-xs font-semibold text-gray-600 mb-1.5">{{ __t('label.name') }}</label>
-                <input type="text" name="name" value="{{ old('name', $product->name) }}" required
-                       class="w-full px-3 py-2 border border-gray-200 rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-green-500 bg-gray-50 focus:bg-white transition {{ $errors->has('name') ? 'border-red-300' : '' }}">
-                @error('name') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+                <div class="space-y-2">
+                    @foreach(['az' => 'AZ 🇦🇿', 'en' => 'EN 🇬🇧'] as $locale => $flag)
+                    <div class="flex items-center gap-2">
+                        <span class="w-12 text-xs font-bold text-gray-500 shrink-0">{{ $flag }}</span>
+                        <input type="text" name="name_translations[{{ $locale }}]"
+                               value="{{ old('name_translations.' . $locale, $product->name_translations[$locale] ?? ($locale === 'az' ? $product->name : '')) }}"
+                               {{ $locale === 'az' ? 'required' : '' }}
+                               class="flex-1 px-3 py-2 border border-gray-200 rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-green-500 bg-gray-50 focus:bg-white transition {{ $errors->has('name_translations.' . $locale) ? 'border-red-300' : '' }}">
+                    </div>
+                    @endforeach
+                </div>
+                @error('name_translations.az') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
             </div>
 
+            {{-- Slug --}}
             <div>
                 <label class="block text-xs font-semibold text-gray-600 mb-1.5">{{ __t('admin.col_slug') }}</label>
                 <input type="text" name="slug" value="{{ old('slug', $product->slug) }}"
@@ -50,12 +62,24 @@
                 @error('slug') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
             </div>
 
+            {{-- Description (bilingual) --}}
             <div>
-                <label class="block text-xs font-semibold text-gray-600 mb-1.5">{{ __t('label.description') }}</label>
-                <textarea name="description" rows="3"
-                          class="w-full px-3 py-2 border border-gray-200 rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-green-500 bg-gray-50 focus:bg-white transition">{{ old('description', $product->description) }}</textarea>
+                <label class="block text-xs font-semibold text-gray-600 mb-1.5">
+                    {{ __t('label.description') }}
+                    <span class="text-gray-400 font-normal">({{ __t('label.optional') }})</span>
+                </label>
+                <div class="space-y-2">
+                    @foreach(['az' => 'AZ 🇦🇿', 'en' => 'EN 🇬🇧'] as $locale => $flag)
+                    <div class="flex items-start gap-2">
+                        <span class="w-12 text-xs font-bold text-gray-500 shrink-0 pt-2">{{ $flag }}</span>
+                        <textarea name="description_translations[{{ $locale }}]" rows="2"
+                                  class="flex-1 px-3 py-2 border border-gray-200 rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-green-500 bg-gray-50 focus:bg-white transition">{{ old('description_translations.' . $locale, $product->description_translations[$locale] ?? ($locale === 'az' ? $product->description : '')) }}</textarea>
+                    </div>
+                    @endforeach
+                </div>
             </div>
 
+            {{-- Price --}}
             <div class="grid grid-cols-3 gap-3">
                 <div>
                     <label class="block text-xs font-semibold text-gray-600 mb-1.5">{{ __t('label.price') }} (₼)</label>
@@ -78,6 +102,7 @@
                 </div>
             </div>
 
+            {{-- Unit + Stock --}}
             <div class="grid grid-cols-2 gap-3">
                 <div>
                     <label class="block text-xs font-semibold text-gray-600 mb-1.5">{{ __t('admin.col_unit') }}</label>
@@ -96,6 +121,7 @@
                 </div>
             </div>
 
+            {{-- Status --}}
             <div>
                 <label class="block text-xs font-semibold text-gray-600 mb-1.5">{{ __t('admin.col_status') }}</label>
                 <select name="status"
@@ -106,6 +132,7 @@
                 </select>
             </div>
 
+            {{-- Flags --}}
             <div class="flex flex-wrap items-center gap-4">
                 @foreach(['is_organic' => 'label.organic', 'is_fresh_today' => 'label.fresh_today', 'is_featured' => 'label.featured', 'is_top_seller' => 'label.top_seller', 'in_stock' => 'label.in_stock'] as $field => $key)
                 <div class="flex items-center gap-2">
@@ -120,7 +147,7 @@
             <div class="flex items-center gap-3 pt-2">
                 <button type="submit"
                         class="bg-green-600 hover:bg-green-700 text-white text-xs font-semibold px-4 py-2 rounded-lg transition">
-                    {{ __t('button.save') }}
+                    {{ __t('button.save_changes') }}
                 </button>
                 <a href="{{ route('admin.products.index') }}"
                    class="text-xs text-gray-500 hover:text-gray-700 transition">

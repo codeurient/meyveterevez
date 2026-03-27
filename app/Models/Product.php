@@ -17,7 +17,7 @@ class Product extends Model
 
     protected $fillable = [
         'user_id', 'store_profile_id', 'category_id',
-        'name', 'slug', 'description',
+        'name', 'name_translations', 'slug', 'description', 'description_translations',
         'price', 'original_price', 'discount_percent',
         'unit', 'weight_per_unit',
         'stock_quantity', 'in_stock', 'min_order_qty', 'max_order_qty',
@@ -27,14 +27,16 @@ class Product extends Model
     ];
 
     protected $casts = [
-        'price'            => 'decimal:2',
-        'original_price'   => 'decimal:2',
-        'rating_avg'       => 'decimal:2',
-        'in_stock'         => 'boolean',
-        'is_organic'       => 'boolean',
-        'is_fresh_today'   => 'boolean',
-        'is_featured'      => 'boolean',
-        'is_top_seller'    => 'boolean',
+        'name_translations'        => 'array',
+        'description_translations' => 'array',
+        'price'                    => 'decimal:2',
+        'original_price'           => 'decimal:2',
+        'rating_avg'               => 'decimal:2',
+        'in_stock'                 => 'boolean',
+        'is_organic'               => 'boolean',
+        'is_fresh_today'           => 'boolean',
+        'is_featured'              => 'boolean',
+        'is_top_seller'            => 'boolean',
     ];
 
     // ==================== Relationships ====================

@@ -63,25 +63,81 @@
                        placeholder="AZ">
             </div>
 
-            {{-- Lat / Lng --}}
-            <div class="grid grid-cols-2 gap-3">
-                <div>
-                    <label class="block text-xs font-semibold text-gray-600 mb-1.5">
-                        {{ __t('admin.col_latitude') }}
+            {{-- Map Search + Coordinates ──────────────────────────────── --}}
+            <div class="space-y-3">
+
+                {{-- Section label --}}
+                <div class="flex items-center gap-2">
+                    <i class="fas fa-map-marker-alt text-green-500 text-xs"></i>
+                    <label class="text-xs font-semibold text-gray-600">
+                        {{ __t('label.map_search') }}
                         <span class="text-gray-400 font-normal">({{ __t('label.optional') }})</span>
                     </label>
-                    <input type="number" name="latitude" value="{{ old('latitude', $location->latitude) }}" step="any"
-                           class="w-full px-3 py-2 border border-gray-200 rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-green-500 bg-gray-50 focus:bg-white transition"
-                           placeholder="40.4093">
                 </div>
-                <div>
-                    <label class="block text-xs font-semibold text-gray-600 mb-1.5">
-                        {{ __t('admin.col_longitude') }}
-                        <span class="text-gray-400 font-normal">({{ __t('label.optional') }})</span>
-                    </label>
-                    <input type="number" name="longitude" value="{{ old('longitude', $location->longitude) }}" step="any"
-                           class="w-full px-3 py-2 border border-gray-200 rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-green-500 bg-gray-50 focus:bg-white transition"
-                           placeholder="49.8671">
+
+                {{-- Search input with icon inside (relative wrapper) --}}
+                <div id="mapSearchWrapper" class="relative">
+                    <div class="relative">
+                        {{-- Icon: absolute inside input, 8px+ gap from text --}}
+                        <i class="fas fa-search absolute left-2.5 top-1/2 -translate-y-1/2 text-gray-400 text-xs pointer-events-none z-10"></i>
+                        <input
+                            id="mapSearchInput"
+                            type="text"
+                            autocomplete="off"
+                            aria-label="{{ __t('placeholder.search_location') }}"
+                            aria-busy="false"
+                            placeholder="{{ __t('placeholder.search_location') }}"
+                            class="w-full pl-8 pr-3 py-2 border border-gray-200 rounded-lg text-xs
+                                   focus:outline-none focus:ring-2 focus:ring-green-500
+                                   bg-gray-50 focus:bg-white transition placeholder-gray-400"
+                        >
+                    </div>
+
+                    {{-- Suggestions dropdown --}}
+                    <div
+                        id="mapSuggestions"
+                        role="listbox"
+                        class="hidden absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200
+                               rounded-lg shadow-lg z-50 max-h-52 overflow-y-auto"
+                    ></div>
+                </div>
+
+                {{-- Interactive map (auto-shown when existing coords present) --}}
+                <div id="locationMapContainer"
+                     class="hidden rounded-lg overflow-hidden border border-gray-200"
+                     style="height: 220px;"></div>
+
+                {{-- Click hint --}}
+                <p id="mapHint"
+                   class="hidden flex items-center gap-1.5 text-xs text-gray-400">
+                    <i class="fas fa-info-circle text-blue-400"></i>
+                    {{ __t('label.map_click_hint') }}
+                </p>
+
+                {{-- Lat / Lng inputs in a 2-col grid --}}
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-600 mb-1.5">
+                            {{ __t('admin.col_latitude') }}
+                        </label>
+                        <input type="number" id="lat_input" name="latitude"
+                               value="{{ old('latitude', $location->latitude) }}" step="any"
+                               class="w-full px-3 py-2 border border-gray-200 rounded-lg text-xs
+                                      focus:outline-none focus:ring-2 focus:ring-green-500
+                                      bg-gray-50 focus:bg-white transition"
+                               placeholder="40.4093">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-600 mb-1.5">
+                            {{ __t('admin.col_longitude') }}
+                        </label>
+                        <input type="number" id="lng_input" name="longitude"
+                               value="{{ old('longitude', $location->longitude) }}" step="any"
+                               class="w-full px-3 py-2 border border-gray-200 rounded-lg text-xs
+                                      focus:outline-none focus:ring-2 focus:ring-green-500
+                                      bg-gray-50 focus:bg-white transition"
+                               placeholder="49.8671">
+                    </div>
                 </div>
             </div>
 
@@ -109,10 +165,18 @@
 </div>
 @endsection
 
+@section('styles')
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+@endsection
+
 @section('scripts')
 <script>
 document.getElementById('locationType').addEventListener('change', function () {
     document.getElementById('parentField').classList.toggle('hidden', this.value !== 'city');
 });
 </script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV/XN/WLs=" crossorigin=""></script>
+@vite('resources/js/admin/location-map.js')
 @endsection
